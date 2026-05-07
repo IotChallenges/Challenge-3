@@ -6,3 +6,5 @@
 *.toc
 *.synctex.gz
 *.pdf
+mosquitto.db
+challenge/data/id_log.csv

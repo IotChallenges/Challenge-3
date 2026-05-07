@@ -1,0 +1,339 @@
+[
+    {
+        "id": "f6883eb3583e92ca",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ba2ca5aff0e55dc9",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mosquitto",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0efdf23e3b33a7ea",
+        "type": "inject",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 180,
+        "wires": [
+            [
+                "c359d71313185152"
+            ]
+        ]
+    },
+    {
+        "id": "c359d71313185152",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "random",
+        "func": "// Return a random integer from 0 to 30000 (both included):\nvar rand = Math.floor(Math.random() * 30001);\nvar timestamp = Math.floor(msg.payload / 1000); // ms to s\nmsg.payload = { id: rand, timestamp: timestamp};\nreturn msg; // 30001 as random is 1 exclusive\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 180,
+        "wires": [
+            [
+                "f9527e294129ef18",
+                "5e2a414e7c9d13c2"
+            ]
+        ]
+    },
+    {
+        "id": "f9527e294129ef18",
+        "type": "mqtt out",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "topic": "challenge3/id_generator",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ba2ca5aff0e55dc9",
+        "x": 630,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "cc3a4b315dc34c9c",
+        "type": "csv",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "once",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "No.,ID,TIMESTAMP",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 830,
+        "y": 260,
+        "wires": [
+            [
+                "7ba49873b7207518"
+            ]
+        ]
+    },
+    {
+        "id": "7ba49873b7207518",
+        "type": "file",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/id_log.csv",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 1010,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5e2a414e7c9d13c2",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "enumerator",
+        "func": "msg.payload.no = flow.message_no;\nflow.message_no++;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nflow.message_no = 0;",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 260,
+        "wires": [
+            [
+                "1f6e248d1bb1d1b7"
+            ]
+        ]
+    },
+    {
+        "id": "1f6e248d1bb1d1b7",
+        "type": "template",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\n    \"No.\": {{payload.no}},\n    \"ID\": {{payload.id}},\n    \"TIMESTAMP\": {{payload.timestamp}}\n}",
+        "output": "json",
+        "x": 680,
+        "y": 260,
+        "wires": [
+            [
+                "cc3a4b315dc34c9c"
+            ]
+        ]
+    },
+    {
+        "id": "5a739cf82e56e3a8",
+        "type": "mqtt in",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "topic": "challenge3/id_generator",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ba2ca5aff0e55dc9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 320,
+        "wires": [
+            [
+                "a427bf23be43a1ff",
+                "348979ac59fb2d09"
+            ]
+        ]
+    },
+    {
+        "id": "a427bf23be43a1ff",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "get weird N",
+        "func": "msg.payload.id = msg.payload.id % 5128;\nmsg.topic = \"n\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 320,
+        "wires": [
+            [
+                "f5989082358f323c"
+            ]
+        ]
+    },
+    {
+        "id": "348979ac59fb2d09",
+        "type": "file in",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/challenge3.csv",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 460,
+        "y": 380,
+        "wires": [
+            [
+                "548306a30b5b2b4f"
+            ]
+        ]
+    },
+    {
+        "id": "548306a30b5b2b4f",
+        "type": "csv",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\r\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 650,
+        "y": 380,
+        "wires": [
+            [
+                "fc22bae02eb89a9d"
+            ]
+        ]
+    },
+    {
+        "id": "f5989082358f323c",
+        "type": "join",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": true,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 930,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fc22bae02eb89a9d",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "set topic",
+        "func": "msg.topic = \"csv\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 380,
+        "wires": [
+            [
+                "f5989082358f323c"
+            ]
+        ]
+    },
+    {
+        "id": "aa6cdf4512354555",
+        "type": "debug",
+        "z": "f6883eb3583e92ca",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1120,
+        "y": 320,
+        "wires": []
+    }
+]
