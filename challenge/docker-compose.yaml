@@ -22,9 +22,3 @@ services:
     volumes:
       - ./node-red:/data
       - ./data:/results
-
-volumes:
-  node-red-data:
-
-networks:
-  node-red-net:
