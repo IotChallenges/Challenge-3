@@ -8,3 +8,4 @@
 *.pdf
 mosquitto.db
 challenge/data/id_log.csv
+challenge/data/filtered_elems.csv
