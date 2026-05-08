@@ -415,7 +415,7 @@
         "type": "function",
         "z": "f6883eb3583e92ca",
         "name": "filter elems",
-        "func": "var cmdString = msg.payload.payload.replaceAll(\"'\", '\"');\nvar cmd = JSON.parse(cmdString);\n\nvar seqNum = cmd[\"Sequence Number\"];\nvar attributes = cmd[\"Attribute\"] || [];\nvar statusList = cmd[\"Status\"] || [];\nvar dataTypes = cmd[\"Data Type\"] || [];\n\nvar int16Val = cmd[\"Int16\"];\nvar uint16Vals = cmd[\"Uint16\"] || [];\n\nvar timestamp = Date.now();\n\n// Incremental row number\ncontext.set(\"rowNum\", context.get(\"rowNum\") || 0);\n\nvar result = [];\n\nfor (var i = 0; i < attributes.length; i++) {\n  var attrName = attributes[i].split(\" (\")[0];\n\n  // Keep only required attributes\n  if (\n    attrName !== \"Active Power\" &&\n    attrName !== \"RMS Current\" &&\n    attrName !== \"RMS Voltage\"\n  ) {\n    continue;\n  }\n  var dataType = dataTypes[i] || \"\";\n  var status = dataTypes[i] || \"\";\n  status = status.split(\" (\")[0];\n  var dataType = dataType.split(\" (\")[0];\n\n  var value = \"\";\n\n  // Active Power uses Int16\n  if (attrName === \"Active Power\") {\n    value = parseInt(int16Val);\n  } else {\n    // RMS Current / RMS Voltage use Uint16 array\n    var uintIndex = 0;\n\n    for (var j = 0; j < i; j++) {\n      if (dataTypes[j] !== undefined && dataTypes[j].includes(\"Unsigned\")) {\n        uintIndex++;\n      }\n    }\n\n    if (uint16Vals[uintIndex]) {\n      value = parseInt(uint16Vals[uintIndex].split(\" \")[0]);\n    }\n  }\n\n  // Increment row number\n  var rowNum = context.get(\"rowNum\") + 1;\n  context.set(\"rowNum\", rowNum);\n\n  // Push object\n  result.push({\n    \"No.\": rowNum,\n    Timestamp: timestamp,\n    \"Sequence Number\": seqNum,\n    Attribute: attrName,\n    Status: status,\n    \"Data Type\": dataType,\n    \"Data Value\": value,\n  });\n}\n\n// Send to CSV node\nmsg.payload = result;\n\nreturn msg;\n",
+        "func": "var cmdString = msg.payload.payload.replaceAll(\"'\", '\"');\nvar cmd = JSON.parse(cmdString);\n\nvar seqNum = cmd[\"Sequence Number\"];\nvar attributes = cmd[\"Attribute\"] || [];\nvar statusList = cmd[\"Status\"] || [];\nvar dataTypes = cmd[\"Data Type\"] || [];\n\nvar int16Val = cmd[\"Int16\"];\nvar uint16Vals = cmd[\"Uint16\"] || [];\n\nif (!Array.isArray(attributes)) {\n    attributes = [attributes];\n}\nif (!Array.isArray(statusList)) {\n    statusList = [statusList];\n}\nif (!Array.isArray(dataTypes)) {\n    dataTypes = [dataTypes];\n}\nif (!Array.isArray(uint16Vals)) {\n    uint16Vals = [uint16Vals];\n}\n\nvar timestamp = Date.now();\n\n// Incremental row number\ncontext.set(\"rowNum\", context.get(\"rowNum\") || 0);\n\nvar result = [];\n\nfor (var i = 0; i < attributes.length; i++) {\n  var attrName = attributes[i].split(\" (\")[0];\n\n  // Keep only required attributes\n  if (\n    attrName !== \"Active Power\" &&\n    attrName !== \"RMS Current\" &&\n    attrName !== \"RMS Voltage\"\n  ) {\n    continue;\n  }\n  var dataType = dataTypes[i] || \"\";\n  var status = dataTypes[i] || \"\";\n  status = status.split(\" (\")[0];\n  var dataType = dataType.split(\" (\")[0];\n\n  var value = \"\";\n\n  // Active Power uses Int16\n  if (attrName === \"Active Power\") {\n    value = parseInt(int16Val);\n  } else {\n    // RMS Current / RMS Voltage use Uint16 array\n    var uintIndex = 0;\n\n    for (var j = 0; j < i; j++) {\n      if (dataTypes[j] !== undefined && dataTypes[j].includes(\"Unsigned\")) {\n        uintIndex++;\n      }\n    }\n\n    if (uint16Vals[uintIndex]) {\n      value = parseInt(uint16Vals[uintIndex].split(\" \")[0]);\n    }\n  }\n\n  // Increment row number\n  var rowNum = context.get(\"rowNum\") + 1;\n  context.set(\"rowNum\", rowNum);\n\n  // Push object\n  result.push({\n    \"No.\": rowNum,\n    Timestamp: timestamp,\n    \"Sequence Number\": seqNum,\n    Attribute: attrName,\n    Status: status,\n    \"Data Type\": dataType,\n    \"Data Value\": value,\n  });\n}\n\n// Send to CSV node\nmsg.payload = result;\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -582,7 +582,7 @@
         "wires": [
             [
                 "d4bd56d32fc3986a",
-                "7909b546c3c62cad"
+                "3613b643df76beba"
             ]
         ]
     },
@@ -600,7 +600,9 @@
         "x": 2020,
         "y": 460,
         "wires": [
-            []
+            [
+                "724227fa83fe892f"
+            ]
         ]
     },
     {
@@ -608,7 +610,7 @@
         "type": "function",
         "z": "f6883eb3583e92ca",
         "name": "prepare thingspeak",
-        "func": "let apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nlet sources = Object.keys(costs);\n\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet smallestSource = sources[0];\n\nlet destinations = Object.keys(costs[smallestSource]);\n\ndestinations.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet messages = [];\n\nfor (let d of destinations) {\n    let cost = costs[smallestSource][d];\n    messages.push({\n        url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + cost,\n        payload: { source: smallestSource, destination: d, cost: cost }\n    });\n}\n\nmsg.payload = messages;\nreturn msg;",
+        "func": "let rows = msg.payload;\n\nlet apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet sources = [...new Set(rows.map(r => r.Source))];\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\nlet smallestSource = sources[0];\n\nlet filtered = rows\n    .filter(r => r.Source === smallestSource)\n    .sort((a, b) => parseInt(a.Destination, 16) - parseInt(b.Destination, 16));\n\nmsg.payload = filtered.map(r => ({\n    url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + r.Cost,\n    payload: r\n}));\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -755,5 +757,65 @@
                 "a427bf23be43a1ff"
             ]
         ]
+    },
+    {
+        "id": "724227fa83fe892f",
+        "type": "file in",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/outgoing_cost.csv",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 2300,
+        "y": 460,
+        "wires": [
+            [
+                "590ffd24ba3b5819"
+            ]
+        ]
+    },
+    {
+        "id": "590ffd24ba3b5819",
+        "type": "csv",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 2510,
+        "y": 460,
+        "wires": [
+            [
+                "7909b546c3c62cad"
+            ]
+        ]
+    },
+    {
+        "id": "3613b643df76beba",
+        "type": "debug",
+        "z": "f6883eb3583e92ca",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1860,
+        "y": 540,
+        "wires": []
     }
 ]

@@ -582,7 +582,7 @@
         "wires": [
             [
                 "d4bd56d32fc3986a",
-                "7909b546c3c62cad"
+                "3613b643df76beba"
             ]
         ]
     },
@@ -600,7 +600,9 @@
         "x": 2020,
         "y": 460,
         "wires": [
-            []
+            [
+                "724227fa83fe892f"
+            ]
         ]
     },
     {
@@ -608,7 +610,7 @@
         "type": "function",
         "z": "f6883eb3583e92ca",
         "name": "prepare thingspeak",
-        "func": "let apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nlet sources = Object.keys(costs);\n\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet smallestSource = sources[0];\n\nlet destinations = Object.keys(costs[smallestSource]);\n\ndestinations.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet messages = [];\n\nfor (let d of destinations) {\n    let cost = costs[smallestSource][d];\n    messages.push({\n        url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + cost,\n        payload: { source: smallestSource, destination: d, cost: cost }\n    });\n}\n\nmsg.payload = messages;\nreturn msg;",
+        "func": "let rows = msg.payload;\n\nlet apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet sources = [...new Set(rows.map(r => r.Source))];\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\nlet smallestSource = sources[0];\n\nlet filtered = rows\n    .filter(r => r.Source === smallestSource)\n    .sort((a, b) => parseInt(a.Destination, 16) - parseInt(b.Destination, 16));\n\nmsg.payload = filtered.map(r => ({\n    url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + r.Cost,\n    payload: r\n}));\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -755,5 +757,65 @@
                 "a427bf23be43a1ff"
             ]
         ]
+    },
+    {
+        "id": "724227fa83fe892f",
+        "type": "file in",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/outgoing_cost.csv",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 2300,
+        "y": 460,
+        "wires": [
+            [
+                "590ffd24ba3b5819"
+            ]
+        ]
+    },
+    {
+        "id": "590ffd24ba3b5819",
+        "type": "csv",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\r\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 2510,
+        "y": 460,
+        "wires": [
+            [
+                "7909b546c3c62cad"
+            ]
+        ]
+    },
+    {
+        "id": "3613b643df76beba",
+        "type": "debug",
+        "z": "f6883eb3583e92ca",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2020,
+        "y": 580,
+        "wires": []
     }
 ]
