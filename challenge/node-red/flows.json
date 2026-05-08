@@ -39,95 +39,6 @@
         "sessionExpiry": ""
     },
     {
-        "id": "1037140ce036e397",
-        "type": "ui-base",
-        "name": "My Dashboard",
-        "path": "/dashboard",
-        "appIcon": "",
-        "includeClientData": true,
-        "acceptsClientConfig": [
-            "ui-notification",
-            "ui-control"
-        ],
-        "showPathInSidebar": false,
-        "headerContent": "page",
-        "navigationStyle": "default",
-        "titleBarStyle": "default",
-        "showReconnectNotification": true,
-        "notificationDisplayTime": 1,
-        "showDisconnectNotification": true,
-        "allowInstall": false
-    },
-    {
-        "id": "bbaa154410e7698d",
-        "type": "ui-theme",
-        "name": "Default Theme",
-        "colors": {
-            "surface": "#ffffff",
-            "primary": "#0094CE",
-            "bgPage": "#eeeeee",
-            "groupBg": "#ffffff",
-            "groupOutline": "#cccccc"
-        },
-        "sizes": {
-            "density": "default",
-            "pagePadding": "12px",
-            "groupGap": "12px",
-            "groupBorderRadius": "4px",
-            "widgetGap": "12px"
-        }
-    },
-    {
-        "id": "2d49192a887f3fa3",
-        "type": "ui-page",
-        "name": "Page 1",
-        "ui": "1037140ce036e397",
-        "path": "/page1",
-        "icon": "home",
-        "layout": "grid",
-        "theme": "bbaa154410e7698d",
-        "breakpoints": [
-            {
-                "name": "Default",
-                "px": 0,
-                "cols": 3
-            },
-            {
-                "name": "Tablet",
-                "px": 576,
-                "cols": 6
-            },
-            {
-                "name": "Small Desktop",
-                "px": 768,
-                "cols": 9
-            },
-            {
-                "name": "Desktop",
-                "px": 1024,
-                "cols": 12
-            }
-        ],
-        "order": 1,
-        "className": "",
-        "visible": "true",
-        "disabled": "false"
-    },
-    {
-        "id": "1a391915038b2534",
-        "type": "ui-group",
-        "name": "Group 1",
-        "page": "2d49192a887f3fa3",
-        "width": 6,
-        "height": 1,
-        "order": 1,
-        "showTitle": true,
-        "className": "",
-        "visible": true,
-        "disabled": false,
-        "groupType": "default"
-    },
-    {
         "id": "0efdf23e3b33a7ea",
         "type": "inject",
         "z": "f6883eb3583e92ca",
@@ -148,7 +59,7 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 250,
+        "x": 110,
         "y": 180,
         "wires": [
             [
@@ -276,10 +187,31 @@
         ]
     },
     {
+        "id": "5a739cf82e56e3a8",
+        "type": "mqtt in",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "topic": "challenge3/id_generator",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ba2ca5aff0e55dc9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 320,
+        "wires": [
+            [
+                "359f8aee1a137ac5"
+            ]
+        ]
+    },
+    {
         "id": "a427bf23be43a1ff",
         "type": "function",
         "z": "f6883eb3583e92ca",
-        "name": "calculate N",
+        "name": "get weird N",
         "func": "msg.payload.id = msg.payload.id % 5128;\nmsg.topic = \"n\";\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
@@ -287,7 +219,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 570,
+        "x": 520,
         "y": 320,
         "wires": [
             [
@@ -307,7 +239,7 @@
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 600,
+        "x": 510,
         "y": 380,
         "wires": [
             [
@@ -331,7 +263,7 @@
         "strings": true,
         "include_empty_strings": "",
         "include_null_values": "",
-        "x": 790,
+        "x": 700,
         "y": 380,
         "wires": [
             [
@@ -360,7 +292,7 @@
         "reduceInit": "",
         "reduceInitType": "num",
         "reduceFixup": "",
-        "x": 1070,
+        "x": 980,
         "y": 320,
         "wires": [
             [
@@ -380,7 +312,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 940,
+        "x": 850,
         "y": 380,
         "wires": [
             [
@@ -400,11 +332,12 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 430,
+        "x": 480,
         "y": 440,
         "wires": [
             [
                 "4f043e5b7b941a2b",
+                "cb2ec725019f8be7",
                 "9e9eebc069241918"
             ]
         ]
@@ -413,7 +346,7 @@
         "id": "4f043e5b7b941a2b",
         "type": "switch",
         "z": "f6883eb3583e92ca",
-        "name": "filter",
+        "name": "",
         "property": "publish",
         "propertyType": "msg",
         "rules": [
@@ -426,7 +359,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 630,
+        "x": 640,
         "y": 440,
         "wires": [
             [
@@ -448,7 +381,7 @@
         "correl": "",
         "expiry": "",
         "broker": "ba2ca5aff0e55dc9",
-        "x": 970,
+        "x": 980,
         "y": 440,
         "wires": []
     },
@@ -469,12 +402,11 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 800,
+        "x": 810,
         "y": 440,
         "wires": [
             [
-                "314b022bd2cc7d3d",
-                "cb2ec725019f8be7"
+                "314b022bd2cc7d3d"
             ]
         ]
     },
@@ -482,19 +414,19 @@
         "id": "cb2ec725019f8be7",
         "type": "function",
         "z": "f6883eb3583e92ca",
-        "name": "extract attributes",
-        "func": "var cmdString = msg.payload.payload.replaceAll(\"'\", '\"');\nvar cmd = JSON.parse(cmdString);\n\nvar seqNum = cmd[\"Sequence Number\"];\nvar attributes = cmd[\"Attribute\"] || [];\nvar statusList = cmd[\"Status\"] || [];\nvar dataTypes = cmd[\"Data Type\"] || [];\n\nvar int16Val = cmd[\"Int16\"];\nvar uint16Vals = cmd[\"Uint16\"] || [];\n\nif (!Array.isArray(attributes)) {\n  attributes = [attributes];\n}\nif (!Array.isArray(statusList)) {\n    statusList = [statusList];\n}\nif (!Array.isArray(dataTypes)) {\n    dataTypes = [dataTypes];\n}\nif (!Array.isArray(uint16Vals)) {\n    uint16Vals = [uint16Vals];\n}\n\nvar timestamp = Date.now();\n\n// Incremental row number\ncontext.set(\"rowNum\", context.get(\"rowNum\") || 0);\n\nvar result = [];\n\nfor (var i = 0; i < attributes.length; i++) {\n  var attrName = attributes[i].split(\" (\")[0];\n\n  // Keep only required attributes\n  if (\n    attrName !== \"Active Power\" &&\n    attrName !== \"RMS Current\" &&\n    attrName !== \"RMS Voltage\"\n  ) {\n    continue;\n  }\n  var dataType = dataTypes[i] || \"\";\n  var status = dataTypes[i] || \"\";\n  status = status.split(\" (\")[0];\n  var dataType = dataType.split(\" (\")[0];\n\n  var value = \"\";\n\n  // Active Power uses Int16\n  if (attrName === \"Active Power\") {\n    value = parseInt(int16Val);\n  } else {\n    // RMS Current / RMS Voltage use Uint16 array\n    var uintIndex = 0;\n\n    for (var j = 0; j < i; j++) {\n      if (dataTypes[j] !== undefined && dataTypes[j].includes(\"Unsigned\")) {\n        uintIndex++;\n      }\n    }\n\n    if (uint16Vals[uintIndex]) {\n      value = parseInt(uint16Vals[uintIndex].split(\" \")[0]);\n    }\n  }\n  if (value === \"\" || Number.isNaN(value)) {\n    continue;\n  }\n\n  // Increment row number\n  var rowNum = context.get(\"rowNum\") + 1;\n  context.set(\"rowNum\", rowNum);\n\n  // Push object\n  result.push({\n    \"No.\": rowNum,\n    Timestamp: timestamp,\n    \"Sequence Number\": seqNum,\n    Attribute: attrName,\n    Status: status,\n    \"Data Type\": dataType,\n    \"Data Value\": value,\n  });\n}\n\n// Send to CSV node\nmsg.payload = result;\n\nreturn msg;\n",
+        "name": "filter elems",
+        "func": "var cmdString = msg.payload.payload.replaceAll(\"'\", '\"');\nvar cmd = JSON.parse(cmdString);\n\nvar seqNum = cmd[\"Sequence Number\"];\nvar attributes = cmd[\"Attribute\"] || [];\nvar statusList = cmd[\"Status\"] || [];\nvar dataTypes = cmd[\"Data Type\"] || [];\n\nvar int16Val = cmd[\"Int16\"];\nvar uint16Vals = cmd[\"Uint16\"] || [];\n\nvar timestamp = Date.now();\n\n// Incremental row number\ncontext.set(\"rowNum\", context.get(\"rowNum\") || 0);\n\nvar result = [];\n\nfor (var i = 0; i < attributes.length; i++) {\n  var attrName = attributes[i].split(\" (\")[0];\n\n  // Keep only required attributes\n  if (\n    attrName !== \"Active Power\" &&\n    attrName !== \"RMS Current\" &&\n    attrName !== \"RMS Voltage\"\n  ) {\n    continue;\n  }\n  var dataType = dataTypes[i] || \"\";\n  var status = dataTypes[i] || \"\";\n  status = status.split(\" (\")[0];\n  var dataType = dataType.split(\" (\")[0];\n\n  var value = \"\";\n\n  // Active Power uses Int16\n  if (attrName === \"Active Power\") {\n    value = parseInt(int16Val);\n  } else {\n    // RMS Current / RMS Voltage use Uint16 array\n    var uintIndex = 0;\n\n    for (var j = 0; j < i; j++) {\n      if (dataTypes[j] !== undefined && dataTypes[j].includes(\"Unsigned\")) {\n        uintIndex++;\n      }\n    }\n\n    if (uint16Vals[uintIndex]) {\n      value = parseInt(uint16Vals[uintIndex].split(\" \")[0]);\n    }\n  }\n\n  // Increment row number\n  var rowNum = context.get(\"rowNum\") + 1;\n  context.set(\"rowNum\", rowNum);\n\n  // Push object\n  result.push({\n    \"No.\": rowNum,\n    Timestamp: timestamp,\n    \"Sequence Number\": seqNum,\n    Attribute: attrName,\n    Status: status,\n    \"Data Type\": dataType,\n    \"Data Value\": value,\n  });\n}\n\n// Send to CSV node\nmsg.payload = result;\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 440,
-        "y": 520,
+        "x": 480,
+        "y": 640,
         "wires": [
             [
-                "c52dfde0f91f94c3"
+                "ff4ce922f4dd77b7"
             ]
         ]
     },
@@ -514,11 +446,12 @@
         "strings": true,
         "include_empty_strings": "",
         "include_null_values": "",
-        "x": 890,
-        "y": 520,
+        "x": 780,
+        "y": 640,
         "wires": [
             [
-                "8b8a16fb56d160d5"
+                "8b8a16fb56d160d5",
+                "5cd67393a2825f50"
             ]
         ]
     },
@@ -534,12 +467,12 @@
         "stream": false,
         "addname": "",
         "property": "payload",
-        "x": 750,
-        "y": 520,
+        "x": 640,
+        "y": 640,
         "wires": [
             [
                 "44f5e56177bcfeef",
-                "7dbee0d65649b8cf"
+                "8876f625cdbe40d5"
             ]
         ]
     },
@@ -554,254 +487,43 @@
         "createDir": true,
         "overwriteFile": "false",
         "encoding": "none",
-        "x": 1090,
-        "y": 520,
+        "x": 1020,
+        "y": 620,
         "wires": [
             []
         ]
     },
     {
-        "id": "209b1794b5ef45c1",
-        "type": "ui-chart",
+        "id": "8876f625cdbe40d5",
+        "type": "debug",
         "z": "f6883eb3583e92ca",
-        "group": "1a391915038b2534",
-        "name": "current",
-        "label": "RMS Current",
-        "order": 1,
-        "chartType": "line",
-        "category": "topic",
-        "categoryType": "msg",
-        "xAxisLabel": "",
-        "xAxisProperty": "payload.Timestamp",
-        "xAxisPropertyType": "msg",
-        "xAxisType": "time",
-        "xAxisFormat": "",
-        "xAxisFormatType": "auto",
-        "xmin": "",
-        "xmax": "",
-        "yAxisLabel": "",
-        "yAxisProperty": "payload.DataValue",
-        "yAxisPropertyType": "msg",
-        "ymin": "",
-        "ymax": "",
-        "bins": 10,
-        "action": "append",
-        "stackSeries": false,
-        "pointShape": "circle",
-        "pointRadius": 4,
-        "showLegend": true,
-        "removeOlder": 1,
-        "removeOlderUnit": "3600",
-        "removeOlderPoints": "",
-        "colors": [
-            "#0095ff",
-            "#ff0000",
-            "#ff7f0e",
-            "#2ca02c",
-            "#a347e1",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "textColor": [
-            "#666666"
-        ],
-        "textColorDefault": true,
-        "gridColor": [
-            "#e5e5e5"
-        ],
-        "gridColorDefault": true,
-        "width": 6,
-        "height": 8,
-        "className": "",
-        "interpolation": "linear",
-        "x": 1140,
-        "y": 580,
-        "wires": [
-            []
-        ]
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 720,
+        "wires": []
     },
     {
-        "id": "b52769b1134e43a7",
-        "type": "switch",
+        "id": "5cd67393a2825f50",
+        "type": "debug",
         "z": "f6883eb3583e92ca",
-        "name": "rms current",
-        "property": "payload.Attribute",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "RMS Current",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 970,
-        "y": 580,
-        "wires": [
-            [
-                "209b1794b5ef45c1"
-            ]
-        ]
-    },
-    {
-        "id": "7dbee0d65649b8cf",
-        "type": "function",
-        "z": "f6883eb3583e92ca",
-        "name": "prepare for chart",
-        "func": "msg.payload.DataValue = msg.payload[\"Data Value\"];\nmsg.topic = msg.topic.replace(\"ZigBee/\", \"\");\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 620,
-        "y": 580,
-        "wires": [
-            [
-                "903d295d439ccaeb"
-            ]
-        ]
-    },
-    {
-        "id": "903d295d439ccaeb",
-        "type": "switch",
-        "z": "f6883eb3583e92ca",
-        "name": "validate",
-        "property": "payload.DataValue",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "istype",
-                "v": "number",
-                "vt": "number"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 800,
-        "y": 580,
-        "wires": [
-            [
-                "b52769b1134e43a7",
-                "0c17989ac525eef3"
-            ]
-        ]
-    },
-    {
-        "id": "af4b9bfce181029e",
-        "type": "ui-chart",
-        "z": "f6883eb3583e92ca",
-        "group": "1a391915038b2534",
-        "name": "voltage",
-        "label": "RMS Voltage",
-        "order": 2,
-        "chartType": "line",
-        "category": "topic",
-        "categoryType": "msg",
-        "xAxisLabel": "",
-        "xAxisProperty": "payload.Timestamp",
-        "xAxisPropertyType": "msg",
-        "xAxisType": "time",
-        "xAxisFormat": "",
-        "xAxisFormatType": "auto",
-        "xmin": "",
-        "xmax": "",
-        "yAxisLabel": "",
-        "yAxisProperty": "payload.DataValue",
-        "yAxisPropertyType": "msg",
-        "ymin": "",
-        "ymax": "",
-        "bins": 10,
-        "action": "append",
-        "stackSeries": false,
-        "pointShape": "circle",
-        "pointRadius": 4,
-        "showLegend": true,
-        "removeOlder": 1,
-        "removeOlderUnit": "3600",
-        "removeOlderPoints": "",
-        "colors": [
-            "#0095ff",
-            "#ff0000",
-            "#ff7f0e",
-            "#2ca02c",
-            "#a347e1",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "textColor": [
-            "#666666"
-        ],
-        "textColorDefault": true,
-        "gridColor": [
-            "#e5e5e5"
-        ],
-        "gridColorDefault": true,
-        "width": 6,
-        "height": 8,
-        "className": "",
-        "interpolation": "linear",
-        "x": 1140,
-        "y": 640,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "0c17989ac525eef3",
-        "type": "switch",
-        "z": "f6883eb3583e92ca",
-        "name": "rms voltage",
-        "property": "payload.Attribute",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "RMS Voltage",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 970,
-        "y": 640,
-        "wires": [
-            [
-                "af4b9bfce181029e"
-            ]
-        ]
-    },
-    {
-        "id": "c52dfde0f91f94c3",
-        "type": "switch",
-        "z": "f6883eb3583e92ca",
-        "name": "filter",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "nempty"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 610,
-        "y": 520,
-        "wires": [
-            [
-                "ff4ce922f4dd77b7"
-            ]
-        ]
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 720,
+        "wires": []
     },
     {
         "id": "9e9eebc069241918",
@@ -815,8 +537,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 450,
-        "y": 720,
+        "x": 660,
+        "y": 520,
         "wires": [
             [
                 "05a8298f25358817"
@@ -835,8 +557,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 670,
-        "y": 720,
+        "x": 880,
+        "y": 520,
         "wires": [
             [
                 "4a2ded97ba66bee8",
@@ -856,8 +578,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 860,
-        "y": 820,
+        "x": 1050,
+        "y": 580,
         "wires": []
     },
     {
@@ -872,8 +594,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 880,
-        "y": 720,
+        "x": 1090,
+        "y": 520,
         "wires": [
             [
                 "d4bd56d32fc3986a",
@@ -892,8 +614,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 1110,
-        "y": 720,
+        "x": 1400,
+        "y": 460,
         "wires": [
             []
         ]
@@ -903,15 +625,15 @@
         "type": "function",
         "z": "f6883eb3583e92ca",
         "name": "prepare thingspeak",
-        "func": "let apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nlet sources = Object.keys(costs);\n\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet smallestSource = sources[0];\n\nlet destinations = Object.keys(costs[smallestSource]);\n\ndestinations.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet messages = [];\n\nfor (let d of destinations) {\n\n    let cost = costs[smallestSource][d];\n\n    messages.push({\n        url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + cost,\n        payload: {\n            source: smallestSource,\n            destination: d,\n            cost: cost\n        }\n    });\n}\n\nmsg.payload = messages;\n\nreturn msg;",
+        "func": "let apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nlet sources = Object.keys(costs);\n\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet smallestSource = sources[0];\n\nlet destinations = Object.keys(costs[smallestSource]);\n\ndestinations.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\n// Reemplaza la parte final de tu función\nlet messages = [];\n\nfor (let d of destinations) {\n    let cost = costs[smallestSource][d];\n    messages.push({\n        url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + cost,\n        payload: { source: smallestSource, destination: d, cost: cost }\n    });\n}\n\nmsg.payload = messages;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1090,
-        "y": 780,
+        "x": 1390,
+        "y": 540,
         "wires": [
             [
                 "cc2f4107f2712c2b"
@@ -930,11 +652,11 @@
         "stream": false,
         "addname": "",
         "property": "payload",
-        "x": 1250,
-        "y": 780,
+        "x": 1550,
+        "y": 540,
         "wires": [
             [
-                "bbdd287941203528"
+                "19088de29e2308c6"
             ]
         ]
     },
@@ -955,12 +677,11 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1400,
-        "y": 780,
+        "x": 1940,
+        "y": 540,
         "wires": [
             [
-                "9470f8555ae3be3e",
-                "e9c5c22c761616ef"
+                "9470f8555ae3be3e"
             ]
         ]
     },
@@ -972,7 +693,7 @@
         "method": "GET",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "msg.url",
+        "url": "",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -980,17 +701,19 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1690,
-        "y": 760,
+        "x": 2210,
+        "y": 540,
         "wires": [
-            []
+            [
+                "b20d0be50e809640"
+            ]
         ]
     },
     {
-        "id": "e9c5c22c761616ef",
+        "id": "b20d0be50e809640",
         "type": "debug",
         "z": "f6883eb3583e92ca",
-        "name": "debug 4",
+        "name": "debug 5",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -998,49 +721,55 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1680,
-        "y": 880,
+        "x": 2240,
+        "y": 440,
         "wires": []
     },
     {
-        "id": "5a739cf82e56e3a8",
-        "type": "mqtt in",
+        "id": "19088de29e2308c6",
+        "type": "change",
         "z": "f6883eb3583e92ca",
         "name": "",
-        "topic": "challenge3/id_generator",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "ba2ca5aff0e55dc9",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 220,
-        "y": 320,
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "payload.url",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1710,
+        "y": 540,
         "wires": [
             [
-                "023dd120da9c3b8d"
+                "bbdd287941203528"
             ]
         ]
     },
     {
-        "id": "023dd120da9c3b8d",
+        "id": "359f8aee1a137ac5",
         "type": "function",
         "z": "f6883eb3583e92ca",
-        "name": "limit",
-        "func": "let count = flow.get(\"count\") || 0;\n\nif (count < 200) {\n    count++;\n    flow.set(\"count\", count);\n    return msg;\n}\n\nreturn null;",
+        "name": "limit 200",
+        "func": "let count = flow.get(\"msg_count\") || 0;\n\nif (count >= 200) {\n    return null;\n}\n\ncount++;\n\nflow.set(\"msg_count\", count);\n\nnode.warn(\"Message #\" + count);\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 410,
+        "x": 340,
         "y": 320,
         "wires": [
             [
-                "a427bf23be43a1ff",
-                "348979ac59fb2d09"
+                "348979ac59fb2d09",
+                "a427bf23be43a1ff"
             ]
         ]
     }
