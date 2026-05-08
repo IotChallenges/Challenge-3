@@ -597,7 +597,7 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 2100,
+        "x": 2020,
         "y": 460,
         "wires": [
             []
@@ -608,15 +608,15 @@
         "type": "function",
         "z": "f6883eb3583e92ca",
         "name": "prepare thingspeak",
-        "func": "let apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nlet sources = Object.keys(costs);\n\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet smallestSource = sources[0];\n\nlet destinations = Object.keys(costs[smallestSource]);\n\ndestinations.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\n// Reemplaza la parte final de tu función\nlet messages = [];\n\nfor (let d of destinations) {\n    let cost = costs[smallestSource][d];\n    messages.push({\n        url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + cost,\n        payload: { source: smallestSource, destination: d, cost: cost }\n    });\n}\n\nmsg.payload = messages;\nreturn msg;",
+        "func": "let apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nlet sources = Object.keys(costs);\n\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet smallestSource = sources[0];\n\nlet destinations = Object.keys(costs[smallestSource]);\n\ndestinations.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet messages = [];\n\nfor (let d of destinations) {\n    let cost = costs[smallestSource][d];\n    messages.push({\n        url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + cost,\n        payload: { source: smallestSource, destination: d, cost: cost }\n    });\n}\n\nmsg.payload = messages;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1510,
-        "y": 540,
+        "x": 1990,
+        "y": 520,
         "wires": [
             [
                 "cc2f4107f2712c2b"
@@ -635,8 +635,8 @@
         "stream": false,
         "addname": "",
         "property": "payload",
-        "x": 1670,
-        "y": 540,
+        "x": 2150,
+        "y": 520,
         "wires": [
             [
                 "19088de29e2308c6"
@@ -660,8 +660,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 2040,
-        "y": 540,
+        "x": 2520,
+        "y": 520,
         "wires": [
             [
                 "9470f8555ae3be3e"
@@ -684,8 +684,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 2230,
-        "y": 540,
+        "x": 2710,
+        "y": 520,
         "wires": [
             [
                 "b20d0be50e809640"
@@ -705,7 +705,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 2500,
-        "y": 520,
+        "y": 700,
         "wires": []
     },
     {
@@ -727,8 +727,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1830,
-        "y": 540,
+        "x": 2310,
+        "y": 520,
         "wires": [
             [
                 "bbdd287941203528"
