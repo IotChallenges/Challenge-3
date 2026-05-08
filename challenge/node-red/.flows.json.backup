@@ -59,7 +59,7 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 250,
+        "x": 110,
         "y": 180,
         "wires": [
             [
@@ -199,12 +199,11 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 220,
+        "x": 130,
         "y": 320,
         "wires": [
             [
-                "a427bf23be43a1ff",
-                "348979ac59fb2d09"
+                "359f8aee1a137ac5"
             ]
         ]
     },
@@ -220,7 +219,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 430,
+        "x": 520,
         "y": 320,
         "wires": [
             [
@@ -240,7 +239,7 @@
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 460,
+        "x": 510,
         "y": 380,
         "wires": [
             [
@@ -264,7 +263,7 @@
         "strings": true,
         "include_empty_strings": "",
         "include_null_values": "",
-        "x": 650,
+        "x": 700,
         "y": 380,
         "wires": [
             [
@@ -293,7 +292,7 @@
         "reduceInit": "",
         "reduceInitType": "num",
         "reduceFixup": "",
-        "x": 930,
+        "x": 980,
         "y": 320,
         "wires": [
             [
@@ -313,7 +312,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 800,
+        "x": 850,
         "y": 380,
         "wires": [
             [
@@ -333,7 +332,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 430,
+        "x": 480,
         "y": 440,
         "wires": [
             [
@@ -360,7 +359,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 590,
+        "x": 640,
         "y": 440,
         "wires": [
             [
@@ -382,7 +381,7 @@
         "correl": "",
         "expiry": "",
         "broker": "ba2ca5aff0e55dc9",
-        "x": 930,
+        "x": 980,
         "y": 440,
         "wires": []
     },
@@ -403,7 +402,7 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 760,
+        "x": 810,
         "y": 440,
         "wires": [
             [
@@ -423,7 +422,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 430,
+        "x": 480,
         "y": 640,
         "wires": [
             [
@@ -447,7 +446,7 @@
         "strings": true,
         "include_empty_strings": "",
         "include_null_values": "",
-        "x": 730,
+        "x": 780,
         "y": 640,
         "wires": [
             [
@@ -468,7 +467,7 @@
         "stream": false,
         "addname": "",
         "property": "payload",
-        "x": 590,
+        "x": 640,
         "y": 640,
         "wires": [
             [
@@ -488,7 +487,7 @@
         "createDir": true,
         "overwriteFile": "false",
         "encoding": "none",
-        "x": 970,
+        "x": 1020,
         "y": 620,
         "wires": [
             []
@@ -506,7 +505,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 660,
+        "x": 710,
         "y": 720,
         "wires": []
     },
@@ -522,7 +521,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 880,
+        "x": 930,
         "y": 720,
         "wires": []
     },
@@ -538,7 +537,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 610,
+        "x": 660,
         "y": 520,
         "wires": [
             [
@@ -558,7 +557,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 830,
+        "x": 880,
         "y": 520,
         "wires": [
             [
@@ -579,7 +578,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1000,
+        "x": 1050,
         "y": 580,
         "wires": []
     },
@@ -595,7 +594,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1040,
+        "x": 1090,
         "y": 520,
         "wires": [
             [
@@ -615,8 +614,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 1300,
-        "y": 520,
+        "x": 1400,
+        "y": 460,
         "wires": [
             []
         ]
@@ -633,8 +632,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1290,
-        "y": 600,
+        "x": 1390,
+        "y": 540,
         "wires": [
             [
                 "cc2f4107f2712c2b"
@@ -653,8 +652,8 @@
         "stream": false,
         "addname": "",
         "property": "payload",
-        "x": 1450,
-        "y": 600,
+        "x": 1550,
+        "y": 540,
         "wires": [
             [
                 "19088de29e2308c6"
@@ -678,8 +677,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1840,
-        "y": 600,
+        "x": 1940,
+        "y": 540,
         "wires": [
             [
                 "9470f8555ae3be3e"
@@ -702,29 +701,13 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 2030,
-        "y": 580,
+        "x": 2210,
+        "y": 540,
         "wires": [
             [
                 "b20d0be50e809640"
             ]
         ]
-    },
-    {
-        "id": "e9c5c22c761616ef",
-        "type": "debug",
-        "z": "f6883eb3583e92ca",
-        "name": "debug 4",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1880,
-        "y": 700,
-        "wires": []
     },
     {
         "id": "b20d0be50e809640",
@@ -738,8 +721,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1960,
-        "y": 380,
+        "x": 2240,
+        "y": 440,
         "wires": []
     },
     {
@@ -761,11 +744,32 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1610,
-        "y": 600,
+        "x": 1710,
+        "y": 540,
         "wires": [
             [
                 "bbdd287941203528"
+            ]
+        ]
+    },
+    {
+        "id": "359f8aee1a137ac5",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "limit 200",
+        "func": "let count = flow.get(\"msg_count\") || 0;\n\nif (count >= 200) {\n    return null;\n}\n\ncount++;\n\nflow.set(\"msg_count\", count);\n\nnode.warn(\"Message #\" + count);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 320,
+        "wires": [
+            [
+                "348979ac59fb2d09",
+                "a427bf23be43a1ff"
             ]
         ]
     }
