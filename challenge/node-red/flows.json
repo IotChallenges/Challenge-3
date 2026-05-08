@@ -39,6 +39,95 @@
         "sessionExpiry": ""
     },
     {
+        "id": "1037140ce036e397",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "bbaa154410e7698d",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "2d49192a887f3fa3",
+        "type": "ui-page",
+        "name": "Page 1",
+        "ui": "1037140ce036e397",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "bbaa154410e7698d",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": 0,
+                "cols": 3
+            },
+            {
+                "name": "Tablet",
+                "px": 576,
+                "cols": 6
+            },
+            {
+                "name": "Small Desktop",
+                "px": 768,
+                "cols": 9
+            },
+            {
+                "name": "Desktop",
+                "px": 1024,
+                "cols": 12
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "1a391915038b2534",
+        "type": "ui-group",
+        "name": "Group 1",
+        "page": "2d49192a887f3fa3",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": false,
+        "groupType": "default"
+    },
+    {
         "id": "0efdf23e3b33a7ea",
         "type": "inject",
         "z": "f6883eb3583e92ca",
@@ -337,7 +426,6 @@
         "wires": [
             [
                 "4f043e5b7b941a2b",
-                "cb2ec725019f8be7",
                 "9e9eebc069241918"
             ]
         ]
@@ -406,7 +494,8 @@
         "y": 400,
         "wires": [
             [
-                "314b022bd2cc7d3d"
+                "314b022bd2cc7d3d",
+                "cb2ec725019f8be7"
             ]
         ]
     },
@@ -426,7 +515,7 @@
         "y": 640,
         "wires": [
             [
-                "ff4ce922f4dd77b7"
+                "a0400dcb46aa114e"
             ]
         ]
     },
@@ -446,7 +535,7 @@
         "strings": true,
         "include_empty_strings": "",
         "include_null_values": "",
-        "x": 1530,
+        "x": 1670,
         "y": 640,
         "wires": [
             [
@@ -467,12 +556,12 @@
         "stream": false,
         "addname": "",
         "property": "payload",
-        "x": 1390,
+        "x": 1530,
         "y": 640,
         "wires": [
             [
                 "44f5e56177bcfeef",
-                "8876f625cdbe40d5"
+                "7dbee0d65649b8cf"
             ]
         ]
     },
@@ -487,27 +576,11 @@
         "createDir": true,
         "overwriteFile": "false",
         "encoding": "none",
-        "x": 1770,
+        "x": 1910,
         "y": 620,
         "wires": [
             []
         ]
-    },
-    {
-        "id": "8876f625cdbe40d5",
-        "type": "debug",
-        "z": "f6883eb3583e92ca",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1460,
-        "y": 720,
-        "wires": []
     },
     {
         "id": "5cd67393a2825f50",
@@ -521,7 +594,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1680,
+        "x": 1820,
         "y": 720,
         "wires": []
     },
@@ -695,22 +768,6 @@
         ]
     },
     {
-        "id": "b20d0be50e809640",
-        "type": "debug",
-        "z": "f6883eb3583e92ca",
-        "name": "debug 5",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 2500,
-        "y": 700,
-        "wires": []
-    },
-    {
         "id": "19088de29e2308c6",
         "type": "change",
         "z": "f6883eb3583e92ca",
@@ -817,5 +874,249 @@
         "x": 2020,
         "y": 580,
         "wires": []
-    }
+    },
+
+  {
+    "id": "209b1794b5ef45c1",
+    "type": "ui-chart",
+    "z": "f6883eb3583e92ca",
+    "group": "1a391915038b2534",
+    "name": "current",
+    "label": "RMS Current",
+    "order": 1,
+    "chartType": "line",
+    "category": "topic",
+    "categoryType": "msg",
+    "xAxisLabel": "",
+    "xAxisProperty": "",
+    "xAxisPropertyType": "timestamp",
+    "xAxisType": "time",
+    "xAxisFormat": "",
+    "xAxisFormatType": "auto",
+    "xmin": "",
+    "xmax": "",
+    "yAxisLabel": "",
+    "yAxisProperty": "payload.DataValue",
+    "yAxisPropertyType": "msg",
+    "ymin": "",
+    "ymax": "",
+    "bins": 10,
+    "action": "append",
+    "stackSeries": false,
+    "pointShape": "circle",
+    "pointRadius": 4,
+    "showLegend": true,
+    "removeOlder": 1,
+    "removeOlderUnit": "3600",
+    "removeOlderPoints": "",
+    "colors": [
+      "#0095ff",
+      "#ff0000",
+      "#ff7f0e",
+      "#2ca02c",
+      "#a347e1",
+      "#d62728",
+      "#ff9896",
+      "#9467bd",
+      "#c5b0d5"
+    ],
+    "textColor": [
+      "#666666"
+    ],
+    "textColorDefault": true,
+    "gridColor": [
+      "#e5e5e5"
+    ],
+    "gridColorDefault": true,
+    "width": 6,
+    "height": 8,
+    "className": "",
+    "interpolation": "linear",
+    "x": 1780,
+    "y": 780,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "b52769b1134e43a7",
+    "type": "switch",
+    "z": "f6883eb3583e92ca",
+    "name": "rms current",
+    "property": "payload.Attribute",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "eq",
+        "v": "RMS Current",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 1610,
+    "y": 780,
+    "wires": [
+      [
+        "209b1794b5ef45c1"
+      ]
+    ]
+  },
+  {
+    "id": "7dbee0d65649b8cf",
+    "type": "function",
+    "z": "f6883eb3583e92ca",
+    "name": "prepare for chart",
+    "func": "msg.payload.DataValue = msg.payload[\"Data Value\"];\nmsg.topic = msg.topic.replace(\"ZigBee/\", \"\");\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1260,
+    "y": 780,
+    "wires": [
+      [
+        "903d295d439ccaeb"
+      ]
+    ]
+  },
+  {
+    "id": "903d295d439ccaeb",
+    "type": "switch",
+    "z": "f6883eb3583e92ca",
+    "name": "validate",
+    "property": "payload.DataValue",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "istype",
+        "v": "number",
+        "vt": "number"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 1440,
+    "y": 780,
+    "wires": [
+      [
+        "b52769b1134e43a7",
+        "0c17989ac525eef3"
+      ]
+    ]
+  },
+  {
+    "id": "af4b9bfce181029e",
+    "type": "ui-chart",
+    "z": "f6883eb3583e92ca",
+    "group": "1a391915038b2534",
+    "name": "voltage",
+    "label": "RMS Voltage",
+    "order": 2,
+    "chartType": "line",
+    "category": "topic",
+    "categoryType": "msg",
+    "xAxisLabel": "",
+    "xAxisProperty": "",
+    "xAxisPropertyType": "timestamp",
+    "xAxisType": "time",
+    "xAxisFormat": "",
+    "xAxisFormatType": "auto",
+    "xmin": "",
+    "xmax": "",
+    "yAxisLabel": "",
+    "yAxisProperty": "payload.DataValue",
+    "yAxisPropertyType": "msg",
+    "ymin": "",
+    "ymax": "",
+    "bins": 10,
+    "action": "append",
+    "stackSeries": false,
+    "pointShape": "circle",
+    "pointRadius": 4,
+    "showLegend": true,
+    "removeOlder": 1,
+    "removeOlderUnit": "3600",
+    "removeOlderPoints": "",
+    "colors": [
+      "#0095ff",
+      "#ff0000",
+      "#ff7f0e",
+      "#2ca02c",
+      "#a347e1",
+      "#d62728",
+      "#ff9896",
+      "#9467bd",
+      "#c5b0d5"
+    ],
+    "textColor": [
+      "#666666"
+    ],
+    "textColorDefault": true,
+    "gridColor": [
+      "#e5e5e5"
+    ],
+    "gridColorDefault": true,
+    "width": 6,
+    "height": 8,
+    "className": "",
+    "interpolation": "linear",
+    "x": 1780,
+    "y": 840,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "0c17989ac525eef3",
+    "type": "switch",
+    "z": "f6883eb3583e92ca",
+    "name": "rms voltage",
+    "property": "payload.Attribute",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "eq",
+        "v": "RMS Voltage",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 1610,
+    "y": 840,
+    "wires": [
+      [
+        "af4b9bfce181029e"
+      ]
+    ]
+  },
+  {
+    "id": "a0400dcb46aa114e",
+    "type": "switch",
+    "z": "f6883eb3583e92ca",
+    "name": "filter",
+    "property": "payload",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "nempty"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 1390,
+    "y": 640,
+    "wires": [
+      [
+        "ff4ce922f4dd77b7"
+      ]
+    ]
+  }
 ]
