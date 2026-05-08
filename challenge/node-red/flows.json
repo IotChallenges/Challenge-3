@@ -326,7 +326,7 @@
         "type": "function",
         "z": "f6883eb3583e92ca",
         "name": "get packet n",
-        "func": "var id = msg.payload.n.id;\nvar packet = msg.payload.csv[id];\nvar cmd = packet[\"Command String\"] || \"\";\nvar publish = cmd.includes(\"Layer ZBEE_ZCL\");\nvar topic = \"ZigBee/\" + packet[\"Device Name ZigBee Source\"];\nvar ts = Math.floor(Date.now() / 1000);\nvar srcAddr = \"0x\" + packet[\"Source Address\"].toString(16);\nvar dstAddr = \"0x\" + packet[\"Destination Address\"].toString(16);\nvar zbSrcAddr = \"0x\" + packet[\"Source Address ZigBee\"].toString(16);\nvar zbDstAddr = \"0x\" + packet[\"Destination Address ZigBee\"].toString(16);\n\nmsg.publish = publish;\nmsg.topic = topic;\nmsg.payload = {\n    \"timestamp\": ts, \n    \"id\": id, \n    \"wpan.src\": srcAddr, \n    \"wpan.dst\": dstAddr, \n    \"zbee.src\": zbSrcAddr, \n    \"zbee.dst\": zbDstAddr, \n    \"topic\":  topic, \n    \"payload\": cmd\n}\nmsg.packet = packet;\nreturn msg;",
+        "func": "var n = msg.payload.n;\nvar csv = msg.payload.csv;\n\nif (!n || n.id === undefined || !csv) {\n    return null;\n}\n\nvar id = n.id;\nvar packet = csv[id];\n\nif (!packet) {\n    return null;\n}\n\nvar cmd = String(packet[\"Command String\"] || \"\");\nvar packetType = String(packet[\"Packet Type\"] || \"\");\n\nvar publish = cmd.includes(\"Layer ZBEE_ZCL\");\nvar topic = \"ZigBee/\" + (packet[\"Device Name ZigBee Source\"] || \"unknown\");\nvar ts = Math.floor(Date.now() / 1000);\n\nfunction toHex(value) {\n    if (value === undefined || value === null || value === \"\") {\n        return \"\";\n    }\n    return \"0x\" + Number(value).toString(16);\n}\n\nvar srcAddr = toHex(packet[\"Source Address\"]);\nvar dstAddr = toHex(packet[\"Destination Address\"]);\nvar zbSrcAddr = toHex(packet[\"Source Address ZigBee\"]);\nvar zbDstAddr = toHex(packet[\"Destination Address ZigBee\"]);\n\nmsg.publish = publish;\nmsg.topic = topic;\n\nmsg.payload = {\n    \"timestamp\": ts,\n    \"id\": id,\n    \"wpan.src\": srcAddr,\n    \"wpan.dst\": dstAddr,\n    \"zbee.src\": zbSrcAddr,\n    \"zbee.dst\": zbDstAddr,\n    \"topic\": topic,\n    \"payload\": cmd\n};\n\nmsg.packet = packet;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -338,7 +338,8 @@
         "wires": [
             [
                 "4f043e5b7b941a2b",
-                "cb2ec725019f8be7"
+                "cb2ec725019f8be7",
+                "9e9eebc069241918"
             ]
         ]
     },
@@ -423,7 +424,7 @@
         "finalize": "",
         "libs": [],
         "x": 430,
-        "y": 520,
+        "y": 640,
         "wires": [
             [
                 "ff4ce922f4dd77b7"
@@ -447,7 +448,7 @@
         "include_empty_strings": "",
         "include_null_values": "",
         "x": 730,
-        "y": 520,
+        "y": 640,
         "wires": [
             [
                 "8b8a16fb56d160d5",
@@ -468,7 +469,7 @@
         "addname": "",
         "property": "payload",
         "x": 590,
-        "y": 520,
+        "y": 640,
         "wires": [
             [
                 "44f5e56177bcfeef",
@@ -487,8 +488,8 @@
         "createDir": true,
         "overwriteFile": "false",
         "encoding": "none",
-        "x": 930,
-        "y": 520,
+        "x": 970,
+        "y": 620,
         "wires": [
             []
         ]
@@ -506,7 +507,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 660,
-        "y": 600,
+        "y": 720,
         "wires": []
     },
     {
@@ -522,7 +523,101 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 880,
-        "y": 600,
+        "y": 720,
         "wires": []
+    },
+    {
+        "id": "9e9eebc069241918",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "detect link status",
+        "func": "let packet = msg.packet;\n\nif (!packet) {\n    return null;\n}\n\nlet packetType = String(packet[\"Packet Type\"] || \"\");\n\nif (packetType === \"Link Status (0x08)\") {\n    return msg;\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 520,
+        "wires": [
+            [
+                "05a8298f25358817"
+            ]
+        ]
+    },
+    {
+        "id": "05a8298f25358817",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "process link status",
+        "func": "let packet = msg.packet;\n\nif (!packet) {\n    return null;\n}\n\nlet sourceRaw = packet[\"Source Address ZigBee\"];\nlet cmd = String(packet[\"Command String\"] || \"\");\n\nif (sourceRaw === undefined || sourceRaw === null || cmd === \"\") {\n    return null;\n}\n\nlet source = \"0x\" + Number(sourceRaw).toString(16);\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nif (!costs[source]) {\n    costs[source] = {};\n}\n\nlet regex = /'Address':\\s*'([^']+)'[\\s\\S]*?'Outgoing Cost':\\s*'([^']+)'/g;\nlet match;\n\nwhile ((match = regex.exec(cmd)) !== null) {\n    let destination = match[1];\n    let cost = match[2];\n\n    costs[source][destination] = cost;\n}\n\nflow.set(\"outgoing_costs\", costs);\n\nmsg.payload = costs;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 520,
+        "wires": [
+            [
+                "4a2ded97ba66bee8",
+                "b089969fcf0e7211"
+            ]
+        ]
+    },
+    {
+        "id": "4a2ded97ba66bee8",
+        "type": "debug",
+        "z": "f6883eb3583e92ca",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1000,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "b089969fcf0e7211",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "build csv costs",
+        "func": "let costs = flow.get(\"outgoing_costs\") || {};\n\nlet lines = [\"No.,Source,Destination,Cost\"];\nlet no = 1;\n\nfor (let source in costs) {\n    for (let destination in costs[source]) {\n        lines.push(`${no++},${source},${destination},${costs[source][destination]}`);\n    }\n}\n\nmsg.payload = lines.join(\"\\n\") + \"\\n\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 520,
+        "wires": [
+            [
+                "d4bd56d32fc3986a"
+            ]
+        ]
+    },
+    {
+        "id": "d4bd56d32fc3986a",
+        "type": "file",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/outgoing_cost.csv",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1560,
+        "y": 520,
+        "wires": [
+            []
+        ]
     }
 ]
