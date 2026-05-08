@@ -17,6 +17,15 @@
                 "welcome": "4.1.9"
             }
         },
-        "menu-menu-item-palette": false
+        "menu-menu-item-palette": true,
+        "debug": {
+            "filter": "filterSelected",
+            "filteredNodes": [
+                "8876f625cdbe40d5",
+                "5cd67393a2825f50",
+                "4a2ded97ba66bee8",
+                "415c79634a24a07e"
+            ]
+        }
     }
 }

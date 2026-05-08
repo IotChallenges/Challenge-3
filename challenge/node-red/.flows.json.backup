@@ -599,7 +599,8 @@
         "y": 520,
         "wires": [
             [
-                "d4bd56d32fc3986a"
+                "d4bd56d32fc3986a",
+                "7909b546c3c62cad"
             ]
         ]
     },
@@ -612,12 +613,116 @@
         "filenameType": "str",
         "appendNewline": true,
         "createDir": false,
-        "overwriteFile": "false",
+        "overwriteFile": "true",
         "encoding": "none",
-        "x": 1560,
+        "x": 1300,
         "y": 520,
         "wires": [
             []
         ]
+    },
+    {
+        "id": "7909b546c3c62cad",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "prepare thingspeak",
+        "func": "let apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nlet sources = Object.keys(costs);\n\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet smallestSource = sources[0];\n\nlet destinations = Object.keys(costs[smallestSource]);\n\ndestinations.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\n\nlet messages = [];\n\nfor (let d of destinations) {\n\n    let cost = costs[smallestSource][d];\n\n    messages.push({\n        url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + cost,\n        payload: {\n            source: smallestSource,\n            destination: d,\n            cost: cost\n        }\n    });\n}\n\nmsg.payload = messages;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 600,
+        "wires": [
+            [
+                "cc2f4107f2712c2b"
+            ]
+        ]
+    },
+    {
+        "id": "cc2f4107f2712c2b",
+        "type": "split",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload",
+        "x": 1450,
+        "y": 600,
+        "wires": [
+            [
+                "bbdd287941203528"
+            ]
+        ]
+    },
+    {
+        "id": "bbdd287941203528",
+        "type": "delay",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "20",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "20",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1600,
+        "y": 600,
+        "wires": [
+            [
+                "9470f8555ae3be3e",
+                "e9c5c22c761616ef"
+            ]
+        ]
+    },
+    {
+        "id": "9470f8555ae3be3e",
+        "type": "http request",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "{{url}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1890,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e9c5c22c761616ef",
+        "type": "debug",
+        "z": "f6883eb3583e92ca",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1880,
+        "y": 700,
+        "wires": []
     }
 ]
