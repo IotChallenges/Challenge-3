@@ -292,7 +292,8 @@
         "y": 320,
         "wires": [
             [
-                "359f8aee1a137ac5"
+                "359f8aee1a137ac5",
+                "87823c05cd10b838"
             ]
         ]
     },
@@ -300,7 +301,7 @@
         "id": "a427bf23be43a1ff",
         "type": "function",
         "z": "f6883eb3583e92ca",
-        "name": "get weird N",
+        "name": "calculate N",
         "func": "msg.payload.id = msg.payload.id % 5128;\nmsg.topic = \"n\";\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
@@ -503,7 +504,7 @@
         "id": "cb2ec725019f8be7",
         "type": "function",
         "z": "f6883eb3583e92ca",
-        "name": "filter elems",
+        "name": "extract attribs",
         "func": "var cmdString = msg.payload.payload.replaceAll(\"'\", '\"');\nvar cmd = JSON.parse(cmdString);\n\nvar seqNum = cmd[\"Sequence Number\"];\nvar attributes = cmd[\"Attribute\"] || [];\nvar statusList = cmd[\"Status\"] || [];\nvar dataTypes = cmd[\"Data Type\"] || [];\n\nvar int16Val = cmd[\"Int16\"];\nvar uint16Vals = cmd[\"Uint16\"] || [];\n\nif (!Array.isArray(attributes)) {\n    attributes = [attributes];\n}\nif (!Array.isArray(statusList)) {\n    statusList = [statusList];\n}\nif (!Array.isArray(dataTypes)) {\n    dataTypes = [dataTypes];\n}\nif (!Array.isArray(uint16Vals)) {\n    uint16Vals = [uint16Vals];\n}\n\nvar timestamp = Date.now();\n\n// Incremental row number\ncontext.set(\"rowNum\", context.get(\"rowNum\") || 0);\n\nvar result = [];\n\nfor (var i = 0; i < attributes.length; i++) {\n  var attrName = attributes[i].split(\" (\")[0];\n\n  // Keep only required attributes\n  if (\n    attrName !== \"Active Power\" &&\n    attrName !== \"RMS Current\" &&\n    attrName !== \"RMS Voltage\"\n  ) {\n    continue;\n  }\n  var dataType = dataTypes[i] || \"\";\n  var status = dataTypes[i] || \"\";\n  status = status.split(\" (\")[0];\n  var dataType = dataType.split(\" (\")[0];\n\n  var value = \"\";\n\n  // Active Power uses Int16\n  if (attrName === \"Active Power\") {\n    value = parseInt(int16Val);\n  } else {\n    // RMS Current / RMS Voltage use Uint16 array\n    var uintIndex = 0;\n\n    for (var j = 0; j < i; j++) {\n      if (dataTypes[j] !== undefined && dataTypes[j].includes(\"Unsigned\")) {\n        uintIndex++;\n      }\n    }\n\n    if (uint16Vals[uintIndex]) {\n      value = parseInt(uint16Vals[uintIndex].split(\" \")[0]);\n    }\n  }\n\n  // Increment row number\n  var rowNum = context.get(\"rowNum\") + 1;\n  context.set(\"rowNum\", rowNum);\n\n  // Push object\n  result.push({\n    \"No.\": rowNum,\n    Timestamp: timestamp,\n    \"Sequence Number\": seqNum,\n    Attribute: attrName,\n    Status: status,\n    \"Data Type\": dataType,\n    \"Data Value\": value,\n  });\n}\n\n// Send to CSV node\nmsg.payload = result;\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
@@ -511,7 +512,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
+        "x": 1240,
         "y": 640,
         "wires": [
             [
@@ -634,8 +635,7 @@
         "y": 480,
         "wires": [
             [
-                "b089969fcf0e7211",
-                "da944b37642a10c4"
+                "b089969fcf0e7211"
             ]
         ]
     },
@@ -674,9 +674,7 @@
         "x": 2080,
         "y": 440,
         "wires": [
-            [
-                "724227fa83fe892f"
-            ]
+            []
         ]
     },
     {
@@ -691,8 +689,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2610,
-        "y": 440,
+        "x": 670,
+        "y": 560,
         "wires": [
             [
                 "cc2f4107f2712c2b"
@@ -711,8 +709,8 @@
         "stream": false,
         "addname": "",
         "property": "payload",
-        "x": 2770,
-        "y": 440,
+        "x": 830,
+        "y": 560,
         "wires": [
             [
                 "19088de29e2308c6"
@@ -736,8 +734,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 3140,
-        "y": 440,
+        "x": 1200,
+        "y": 560,
         "wires": [
             [
                 "9470f8555ae3be3e"
@@ -760,8 +758,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 3330,
-        "y": 440,
+        "x": 1390,
+        "y": 560,
         "wires": [
             []
         ]
@@ -785,8 +783,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 2930,
-        "y": 440,
+        "x": 990,
+        "y": 560,
         "wires": [
             [
                 "bbdd287941203528"
@@ -826,8 +824,8 @@
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 2220,
-        "y": 440,
+        "x": 290,
+        "y": 560,
         "wires": [
             [
                 "590ffd24ba3b5819"
@@ -850,8 +848,8 @@
         "strings": true,
         "include_empty_strings": "",
         "include_null_values": "",
-        "x": 2430,
-        "y": 440,
+        "x": 490,
+        "y": 560,
         "wires": [
             [
                 "7909b546c3c62cad"
@@ -1118,19 +1116,23 @@
         ]
     },
     {
-        "id": "da944b37642a10c4",
-        "type": "debug",
+        "id": "87823c05cd10b838",
+        "type": "function",
         "z": "f6883eb3583e92ca",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1560,
-        "y": 560,
-        "wires": []
+        "name": "after 200 msgs",
+        "func": "let count = flow.get(\"msg_count\") || 0;\n\nif (count != 200) {\n    return null;\n}\n\ncount++;\n\nflow.set(\"msg_count\", count);\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 460,
+        "wires": [
+            [
+                "724227fa83fe892f"
+            ]
+        ]
     }
 ]
