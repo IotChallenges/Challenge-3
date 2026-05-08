@@ -276,28 +276,6 @@
         ]
     },
     {
-        "id": "5a739cf82e56e3a8",
-        "type": "mqtt in",
-        "z": "f6883eb3583e92ca",
-        "name": "",
-        "topic": "challenge3/id_generator",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "ba2ca5aff0e55dc9",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 220,
-        "y": 320,
-        "wires": [
-            [
-                "a427bf23be43a1ff",
-                "348979ac59fb2d09"
-            ]
-        ]
-    },
-    {
         "id": "a427bf23be43a1ff",
         "type": "function",
         "z": "f6883eb3583e92ca",
@@ -309,7 +287,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 430,
+        "x": 570,
         "y": 320,
         "wires": [
             [
@@ -329,7 +307,7 @@
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 460,
+        "x": 600,
         "y": 380,
         "wires": [
             [
@@ -353,7 +331,7 @@
         "strings": true,
         "include_empty_strings": "",
         "include_null_values": "",
-        "x": 650,
+        "x": 790,
         "y": 380,
         "wires": [
             [
@@ -382,7 +360,7 @@
         "reduceInit": "",
         "reduceInitType": "num",
         "reduceFixup": "",
-        "x": 930,
+        "x": 1070,
         "y": 320,
         "wires": [
             [
@@ -402,7 +380,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 800,
+        "x": 940,
         "y": 380,
         "wires": [
             [
@@ -427,7 +405,6 @@
         "wires": [
             [
                 "4f043e5b7b941a2b",
-                "cb2ec725019f8be7",
                 "9e9eebc069241918"
             ]
         ]
@@ -449,12 +426,11 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 590,
+        "x": 630,
         "y": 440,
         "wires": [
             [
-                "66feb7fbd18abb55",
-                "cb2ec725019f8be7"
+                "66feb7fbd18abb55"
             ]
         ]
     },
@@ -472,7 +448,7 @@
         "correl": "",
         "expiry": "",
         "broker": "ba2ca5aff0e55dc9",
-        "x": 930,
+        "x": 970,
         "y": 440,
         "wires": []
     },
@@ -493,11 +469,12 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 760,
+        "x": 800,
         "y": 440,
         "wires": [
             [
-                "314b022bd2cc7d3d"
+                "314b022bd2cc7d3d",
+                "cb2ec725019f8be7"
             ]
         ]
     },
@@ -514,7 +491,7 @@
         "finalize": "",
         "libs": [],
         "x": 440,
-        "y": 640,
+        "y": 520,
         "wires": [
             [
                 "c52dfde0f91f94c3"
@@ -538,7 +515,7 @@
         "include_empty_strings": "",
         "include_null_values": "",
         "x": 890,
-        "y": 640,
+        "y": 520,
         "wires": [
             [
                 "8b8a16fb56d160d5"
@@ -558,7 +535,7 @@
         "addname": "",
         "property": "payload",
         "x": 750,
-        "y": 640,
+        "y": 520,
         "wires": [
             [
                 "44f5e56177bcfeef",
@@ -826,116 +803,101 @@
             ]
         ]
     },
-  {
-    "id": "5cd67393a2825f50",
-    "type": "debug",
-    "z": "f6883eb3583e92ca",
-    "name": "debug 2",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "tostatus": false,
-    "complete": "false",
-    "statusVal": "",
-    "statusType": "auto",
-    "x": 880,
-    "y": 720,
-    "wires": []
-  },
-  {
-    "id": "9e9eebc069241918",
-    "type": "function",
-    "z": "f6883eb3583e92ca",
-    "name": "detect link status",
-    "func": "let packet = msg.packet;\n\nif (!packet) {\n    return null;\n}\n\nlet packetType = String(packet[\"Packet Type\"] || \"\");\n\nif (packetType === \"Link Status (0x08)\") {\n    return msg;\n}\n\nreturn null;",
-    "outputs": 1,
-    "timeout": 0,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 610,
-    "y": 520,
-    "wires": [
-      [
-        "05a8298f25358817"
-      ]
-    ]
-  },
-  {
-    "id": "05a8298f25358817",
-    "type": "function",
-    "z": "f6883eb3583e92ca",
-    "name": "process link status",
-    "func": "let packet = msg.packet;\n\nif (!packet) {\n    return null;\n}\n\nlet sourceRaw = packet[\"Source Address ZigBee\"];\nlet cmd = String(packet[\"Command String\"] || \"\");\n\nif (sourceRaw === undefined || sourceRaw === null || cmd === \"\") {\n    return null;\n}\n\nlet source = \"0x\" + Number(sourceRaw).toString(16);\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nif (!costs[source]) {\n    costs[source] = {};\n}\n\nlet regex = /'Address':\\s*'([^']+)'[\\s\\S]*?'Outgoing Cost':\\s*'([^']+)'/g;\nlet match;\n\nwhile ((match = regex.exec(cmd)) !== null) {\n    let destination = match[1];\n    let cost = match[2];\n\n    costs[source][destination] = cost;\n}\n\nflow.set(\"outgoing_costs\", costs);\n\nmsg.payload = costs;\nreturn msg;",
-    "outputs": 1,
-    "timeout": 0,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 830,
-    "y": 520,
-    "wires": [
-      [
-        "4a2ded97ba66bee8",
-        "b089969fcf0e7211"
-      ]
-    ]
-  },
-  {
-    "id": "4a2ded97ba66bee8",
-    "type": "debug",
-    "z": "f6883eb3583e92ca",
-    "name": "debug 3",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "tostatus": false,
-    "complete": "false",
-    "statusVal": "",
-    "statusType": "auto",
-    "x": 1000,
-    "y": 580,
-    "wires": []
-  },
-  {
-    "id": "b089969fcf0e7211",
-    "type": "function",
-    "z": "f6883eb3583e92ca",
-    "name": "build csv costs",
-    "func": "let costs = flow.get(\"outgoing_costs\") || {};\n\nlet lines = [\"No.,Source,Destination,Cost\"];\nlet no = 1;\n\nfor (let source in costs) {\n    for (let destination in costs[source]) {\n        lines.push(`${no++},${source},${destination},${costs[source][destination]}`);\n    }\n}\n\nmsg.payload = lines.join(\"\\n\") + \"\\n\";\nreturn msg;",
-    "outputs": 1,
-    "timeout": 0,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 1040,
-    "y": 520,
-    "wires": [
-      [
-        "d4bd56d32fc3986a",
-      "7909b546c3c62cad"]
-    ]
-  },
-  {
-    "id": "d4bd56d32fc3986a",
-    "type": "file",
-    "z": "f6883eb3583e92ca",
-    "name": "",
-    "filename": "/results/outgoing_cost.csv",
-    "filenameType": "str",
-    "appendNewline": true,
-    "createDir": false,
-    "overwriteFile": "true",
-    "encoding": "none",
-    "x": 1300,
-    "y": 520,
-    "wires": [
-      []
-    ]
-  },
+    {
+        "id": "9e9eebc069241918",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "detect link status",
+        "func": "let packet = msg.packet;\n\nif (!packet) {\n    return null;\n}\n\nlet packetType = String(packet[\"Packet Type\"] || \"\");\n\nif (packetType === \"Link Status (0x08)\") {\n    return msg;\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 720,
+        "wires": [
+            [
+                "05a8298f25358817"
+            ]
+        ]
+    },
+    {
+        "id": "05a8298f25358817",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "process link status",
+        "func": "let packet = msg.packet;\n\nif (!packet) {\n    return null;\n}\n\nlet sourceRaw = packet[\"Source Address ZigBee\"];\nlet cmd = String(packet[\"Command String\"] || \"\");\n\nif (sourceRaw === undefined || sourceRaw === null || cmd === \"\") {\n    return null;\n}\n\nlet source = \"0x\" + Number(sourceRaw).toString(16);\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nif (!costs[source]) {\n    costs[source] = {};\n}\n\nlet regex = /'Address':\\s*'([^']+)'[\\s\\S]*?'Outgoing Cost':\\s*'([^']+)'/g;\nlet match;\n\nwhile ((match = regex.exec(cmd)) !== null) {\n    let destination = match[1];\n    let cost = match[2];\n\n    costs[source][destination] = cost;\n}\n\nflow.set(\"outgoing_costs\", costs);\n\nmsg.payload = costs;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 720,
+        "wires": [
+            [
+                "4a2ded97ba66bee8",
+                "b089969fcf0e7211"
+            ]
+        ]
+    },
+    {
+        "id": "4a2ded97ba66bee8",
+        "type": "debug",
+        "z": "f6883eb3583e92ca",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "b089969fcf0e7211",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "build csv costs",
+        "func": "let costs = flow.get(\"outgoing_costs\") || {};\n\nlet lines = [\"No.,Source,Destination,Cost\"];\nlet no = 1;\n\nfor (let source in costs) {\n    for (let destination in costs[source]) {\n        lines.push(`${no++},${source},${destination},${costs[source][destination]}`);\n    }\n}\n\nmsg.payload = lines.join(\"\\n\") + \"\\n\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 720,
+        "wires": [
+            [
+                "d4bd56d32fc3986a",
+                "7909b546c3c62cad"
+            ]
+        ]
+    },
+    {
+        "id": "d4bd56d32fc3986a",
+        "type": "file",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/outgoing_cost.csv",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1110,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
     {
         "id": "7909b546c3c62cad",
         "type": "function",
@@ -948,8 +910,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1290,
-        "y": 600,
+        "x": 1090,
+        "y": 780,
         "wires": [
             [
                 "cc2f4107f2712c2b"
@@ -968,8 +930,8 @@
         "stream": false,
         "addname": "",
         "property": "payload",
-        "x": 1450,
-        "y": 600,
+        "x": 1250,
+        "y": 780,
         "wires": [
             [
                 "bbdd287941203528"
@@ -993,8 +955,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1600,
-        "y": 600,
+        "x": 1400,
+        "y": 780,
         "wires": [
             [
                 "9470f8555ae3be3e",
@@ -1018,8 +980,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1890,
-        "y": 580,
+        "x": 1690,
+        "y": 760,
         "wires": [
             []
         ]
@@ -1036,8 +998,50 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1880,
-        "y": 700,
+        "x": 1680,
+        "y": 880,
         "wires": []
+    },
+    {
+        "id": "5a739cf82e56e3a8",
+        "type": "mqtt in",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "topic": "challenge3/id_generator",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ba2ca5aff0e55dc9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 320,
+        "wires": [
+            [
+                "023dd120da9c3b8d"
+            ]
+        ]
+    },
+    {
+        "id": "023dd120da9c3b8d",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "limit",
+        "func": "let count = flow.get(\"count\") || 0;\n\nif (count < 200) {\n    count++;\n    flow.set(\"count\", count);\n    return msg;\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 320,
+        "wires": [
+            [
+                "a427bf23be43a1ff",
+                "348979ac59fb2d09"
+            ]
+        ]
     }
 ]
