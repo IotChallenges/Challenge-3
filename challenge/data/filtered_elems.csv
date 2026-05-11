@@ -1,0 +1,77 @@
+No.,Timestamp,Sequence Number,Attribute,Status,Data Type,Data Value
+1,1778535560255,232,Active Power,,,NaN
+2,1778535560255,232,RMS Current,,,
+3,1778535560255,232,RMS Voltage,,,
+4,1778535590255,157,RMS Voltage,16-Bit Unsigned Integer,16-Bit Unsigned Integer,221
+5,1778535614257,11,Active Power,16-Bit Signed Integer,16-Bit Signed Integer,0
+6,1778535614257,11,RMS Current,16-Bit Unsigned Integer,16-Bit Unsigned Integer,0
+7,1778535614257,11,RMS Voltage,16-Bit Unsigned Integer,16-Bit Unsigned Integer,220
+8,1778535704267,249,Active Power,,,NaN
+9,1778535704267,249,RMS Current,,,
+10,1778535704267,249,RMS Voltage,,,
+11,1778535746425,230,Active Power,,,NaN
+12,1778535746425,230,RMS Current,,,
+13,1778535746425,230,RMS Voltage,,,
+14,1778535788425,7,Active Power,,,NaN
+15,1778535788425,7,RMS Current,,,
+16,1778535788425,7,RMS Voltage,,,
+17,1778535800426,251,Active Power,,,NaN
+18,1778535800426,251,RMS Current,,,
+19,1778535800426,251,RMS Voltage,,,
+20,1778535812428,18,RMS Current,16-Bit Unsigned Integer,16-Bit Unsigned Integer,0
+21,1778535818428,81,Active Power,,,NaN
+22,1778535818428,81,RMS Current,,,
+23,1778535818428,81,RMS Voltage,,,
+24,1778535860430,23,RMS Voltage,16-Bit Unsigned Integer,16-Bit Unsigned Integer,220
+25,1778535890432,211,Active Power,,,NaN
+26,1778535890432,211,RMS Current,,,
+27,1778535890432,211,RMS Voltage,,,
+28,1778535932433,58,Active Power,,,NaN
+29,1778535932433,58,RMS Current,,,
+30,1778535932433,58,RMS Voltage,,,
+31,1778535986434,102,Active Power,16-Bit Signed Integer,16-Bit Signed Integer,0
+32,1778535986434,102,RMS Current,16-Bit Unsigned Integer,16-Bit Unsigned Integer,0
+33,1778535986434,102,RMS Voltage,16-Bit Unsigned Integer,16-Bit Unsigned Integer,219
+34,1778536004435,189,Active Power,,,NaN
+35,1778536004435,189,RMS Current,,,
+36,1778536004435,189,RMS Voltage,,,
+37,1778536028436,202,Active Power,,,NaN
+38,1778536028436,202,RMS Current,,,
+39,1778536028436,202,RMS Voltage,,,
+40,1778536034437,222,Active Power,,,NaN
+41,1778536034437,222,RMS Current,,,
+42,1778536034437,222,RMS Voltage,,,
+43,1778536070440,21,RMS Voltage,16-Bit Unsigned Integer,16-Bit Unsigned Integer,222
+44,1778536070440,21,RMS Current,16-Bit Unsigned Integer,16-Bit Unsigned Integer,0
+45,1778536070440,21,Active Power,16-Bit Signed Integer,16-Bit Signed Integer,0
+46,1778536088455,199,Active Power,,,NaN
+47,1778536088455,199,RMS Current,,,
+48,1778536088455,199,RMS Voltage,,,
+49,1778536124450,248,Active Power,,,NaN
+50,1778536124450,248,RMS Current,,,
+51,1778536124450,248,RMS Voltage,,,
+52,1778536136464,145,Active Power,,,NaN
+53,1778536136464,145,RMS Current,,,
+54,1778536136464,145,RMS Voltage,,,
+55,1778536142454,182,Active Power,,,NaN
+56,1778536142454,182,RMS Current,,,
+57,1778536142454,182,RMS Voltage,,,
+58,1778536148454,86,RMS Voltage,16-Bit Unsigned Integer,16-Bit Unsigned Integer,222
+59,1778536148454,86,RMS Current,16-Bit Unsigned Integer,16-Bit Unsigned Integer,0
+60,1778536148454,86,Active Power,16-Bit Signed Integer,16-Bit Signed Integer,0
+61,1778536202463,221,RMS Voltage,16-Bit Unsigned Integer,16-Bit Unsigned Integer,220
+62,1778536202463,221,RMS Current,16-Bit Unsigned Integer,16-Bit Unsigned Integer,0
+63,1778536202463,221,Active Power,16-Bit Signed Integer,16-Bit Signed Integer,0
+64,1778536208465,52,RMS Voltage,16-Bit Unsigned Integer,16-Bit Unsigned Integer,222
+65,1778536226467,196,Active Power,,,NaN
+66,1778536226467,196,RMS Current,,,
+67,1778536226467,196,RMS Voltage,,,
+68,1778536274476,24,Active Power,,,NaN
+69,1778536274476,24,RMS Current,,,
+70,1778536274476,24,RMS Voltage,,,
+71,1778536280489,180,Active Power,16-Bit Signed Integer,16-Bit Signed Integer,0
+72,1778536280489,180,RMS Current,16-Bit Unsigned Integer,16-Bit Unsigned Integer,0
+73,1778536280489,180,RMS Voltage,16-Bit Unsigned Integer,16-Bit Unsigned Integer,219
+74,1778536286479,83,Active Power,,,NaN
+75,1778536286479,83,RMS Current,,,
+76,1778536286479,83,RMS Voltage,,,

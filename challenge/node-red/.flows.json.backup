@@ -1,0 +1,1104 @@
+[
+    {
+        "id": "f6883eb3583e92ca",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ba2ca5aff0e55dc9",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mosquitto",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1037140ce036e397",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "bbaa154410e7698d",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "2d49192a887f3fa3",
+        "type": "ui-page",
+        "name": "Page 1",
+        "ui": "1037140ce036e397",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "bbaa154410e7698d",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": 0,
+                "cols": 3
+            },
+            {
+                "name": "Tablet",
+                "px": 576,
+                "cols": 6
+            },
+            {
+                "name": "Small Desktop",
+                "px": 768,
+                "cols": 9
+            },
+            {
+                "name": "Desktop",
+                "px": 1024,
+                "cols": 12
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "1a391915038b2534",
+        "type": "ui-group",
+        "name": "Group 1",
+        "page": "2d49192a887f3fa3",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": false,
+        "groupType": "default"
+    },
+    {
+        "id": "0efdf23e3b33a7ea",
+        "type": "inject",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 180,
+        "wires": [
+            [
+                "c359d71313185152"
+            ]
+        ]
+    },
+    {
+        "id": "c359d71313185152",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "random",
+        "func": "// Return a random integer from 0 to 30000 (both included):\nvar rand = Math.floor(Math.random() * 30001); // 30001 as random is 1 exclusive\nvar timestamp = Math.floor(msg.payload / 1000); // ms to s\nmsg.payload = { id: rand, timestamp: timestamp};\nreturn msg; \n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 180,
+        "wires": [
+            [
+                "f9527e294129ef18",
+                "5e2a414e7c9d13c2"
+            ]
+        ]
+    },
+    {
+        "id": "f9527e294129ef18",
+        "type": "mqtt out",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "topic": "challenge3/id_generator",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ba2ca5aff0e55dc9",
+        "x": 550,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "cc3a4b315dc34c9c",
+        "type": "csv",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "once",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "No.,ID,TIMESTAMP",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 670,
+        "y": 240,
+        "wires": [
+            [
+                "7ba49873b7207518"
+            ]
+        ]
+    },
+    {
+        "id": "7ba49873b7207518",
+        "type": "file",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/id_log.csv",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 850,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5e2a414e7c9d13c2",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "enumerator",
+        "func": "msg.payload.no = flow.message_no;\nflow.message_no++;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nflow.message_no = 0;",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 240,
+        "wires": [
+            [
+                "1f6e248d1bb1d1b7"
+            ]
+        ]
+    },
+    {
+        "id": "1f6e248d1bb1d1b7",
+        "type": "template",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\n    \"No.\": {{payload.no}},\n    \"ID\": {{payload.id}},\n    \"TIMESTAMP\": {{payload.timestamp}}\n}",
+        "output": "json",
+        "x": 520,
+        "y": 240,
+        "wires": [
+            [
+                "cc3a4b315dc34c9c"
+            ]
+        ]
+    },
+    {
+        "id": "5a739cf82e56e3a8",
+        "type": "mqtt in",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "topic": "challenge3/id_generator",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ba2ca5aff0e55dc9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 320,
+        "wires": [
+            [
+                "359f8aee1a137ac5",
+                "87823c05cd10b838"
+            ]
+        ]
+    },
+    {
+        "id": "a427bf23be43a1ff",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "calculate N",
+        "func": "msg.payload.id = msg.payload.id % 5128;\nmsg.topic = \"n\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 320,
+        "wires": [
+            [
+                "f5989082358f323c"
+            ]
+        ]
+    },
+    {
+        "id": "348979ac59fb2d09",
+        "type": "file in",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/challenge3.csv",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 510,
+        "y": 380,
+        "wires": [
+            [
+                "548306a30b5b2b4f"
+            ]
+        ]
+    },
+    {
+        "id": "548306a30b5b2b4f",
+        "type": "csv",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\r\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 700,
+        "y": 380,
+        "wires": [
+            [
+                "fc22bae02eb89a9d"
+            ]
+        ]
+    },
+    {
+        "id": "f5989082358f323c",
+        "type": "join",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 980,
+        "y": 320,
+        "wires": [
+            [
+                "a8e78185f9e4255b"
+            ]
+        ]
+    },
+    {
+        "id": "fc22bae02eb89a9d",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "set topic",
+        "func": "msg.topic = \"csv\";\nmsg.complete = true;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 380,
+        "wires": [
+            [
+                "f5989082358f323c"
+            ]
+        ]
+    },
+    {
+        "id": "a8e78185f9e4255b",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "get packet n",
+        "func": "var n = msg.payload.n;\nvar csv = msg.payload.csv;\n\nif (!n || n.id === undefined || !csv) {\n    return null;\n}\n\nvar id = n.id;\nvar packet = csv[id];\n\nif (!packet) {\n    return null;\n}\n\nvar cmd = String(packet[\"Command String\"] || \"\");\nvar packetType = String(packet[\"Packet Type\"] || \"\");\n\nvar publish = cmd.includes(\"Layer ZBEE_ZCL\");\nvar topic = \"ZigBee/\" + (packet[\"Device Name ZigBee Source\"] || \"unknown\");\nvar ts = Math.floor(Date.now() / 1000);\n\nfunction toHex(value) {\n    if (value === undefined || value === null || value === \"\") {\n        return \"\";\n    }\n    return \"0x\" + Number(value).toString(16);\n}\n\nvar srcAddr = toHex(packet[\"Source Address\"]);\nvar dstAddr = toHex(packet[\"Destination Address\"]);\nvar zbSrcAddr = toHex(packet[\"Source Address ZigBee\"]);\nvar zbDstAddr = toHex(packet[\"Destination Address ZigBee\"]);\n\nmsg.publish = publish;\nmsg.topic = topic;\n\nmsg.payload = {\n    \"timestamp\": ts,\n    \"id\": id,\n    \"wpan.src\": srcAddr,\n    \"wpan.dst\": dstAddr,\n    \"zbee.src\": zbSrcAddr,\n    \"zbee.dst\": zbDstAddr,\n    \"topic\": topic,\n    \"payload\": cmd\n};\n\nmsg.packet = packet;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 440,
+        "wires": [
+            [
+                "4f043e5b7b941a2b",
+                "9e9eebc069241918"
+            ]
+        ]
+    },
+    {
+        "id": "4f043e5b7b941a2b",
+        "type": "switch",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "property": "publish",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "true",
+                "vt": "jsonata"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 510,
+        "y": 500,
+        "wires": [
+            [
+                "66feb7fbd18abb55"
+            ]
+        ]
+    },
+    {
+        "id": "314b022bd2cc7d3d",
+        "type": "mqtt out",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ba2ca5aff0e55dc9",
+        "x": 850,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "66feb7fbd18abb55",
+        "type": "delay",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "10",
+        "nbRateUnits": "1",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 680,
+        "y": 500,
+        "wires": [
+            [
+                "314b022bd2cc7d3d",
+                "cb2ec725019f8be7"
+            ]
+        ]
+    },
+    {
+        "id": "cb2ec725019f8be7",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "extract attribs",
+        "func": "var cmdString = msg.payload.payload.replaceAll(\"'\", '\"');\nvar cmd = JSON.parse(cmdString);\n\nvar seqNum = cmd[\"Sequence Number\"];\nvar attributes = cmd[\"Attribute\"] || [];\nvar statusList = cmd[\"Status\"] || [];\nvar dataTypes = cmd[\"Data Type\"] || [];\n\nvar int16Val = cmd[\"Int16\"];\nvar uint16Vals = cmd[\"Uint16\"] || [];\n\nif (!Array.isArray(attributes)) {\n    attributes = [attributes];\n}\nif (!Array.isArray(statusList)) {\n    statusList = [statusList];\n}\nif (!Array.isArray(dataTypes)) {\n    dataTypes = [dataTypes];\n}\nif (!Array.isArray(uint16Vals)) {\n    uint16Vals = [uint16Vals];\n}\n\nvar timestamp = Date.now();\n\n// Incremental row number\ncontext.set(\"rowNum\", context.get(\"rowNum\") || 0);\n\nvar result = [];\n\nfor (var i = 0; i < attributes.length; i++) {\n  var attrName = attributes[i].split(\" (\")[0];\n\n  // Keep only required attributes\n  if (\n    attrName !== \"Active Power\" &&\n    attrName !== \"RMS Current\" &&\n    attrName !== \"RMS Voltage\"\n  ) {\n    continue;\n  }\n  var dataType = dataTypes[i] || \"\";\n  var status = dataTypes[i] || \"\";\n  status = status.split(\" (\")[0];\n  var dataType = dataType.split(\" (\")[0];\n\n  var value = \"\";\n\n  // Active Power uses Int16\n  if (attrName === \"Active Power\") {\n    value = parseInt(int16Val);\n  } else {\n    // RMS Current / RMS Voltage use Uint16 array\n    var uintIndex = 0;\n\n    for (var j = 0; j < i; j++) {\n      if (dataTypes[j] !== undefined && dataTypes[j].includes(\"Unsigned\")) {\n        uintIndex++;\n      }\n    }\n\n    if (uint16Vals[uintIndex]) {\n      value = parseInt(uint16Vals[uintIndex].split(\" \")[0]);\n    }\n  }\n\n  // Increment row number\n  var rowNum = context.get(\"rowNum\") + 1;\n  context.set(\"rowNum\", rowNum);\n\n  // Push object\n  result.push({\n    \"No.\": rowNum,\n    Timestamp: timestamp,\n    \"Sequence Number\": seqNum,\n    Attribute: attrName,\n    Status: status,\n    \"Data Type\": dataType,\n    \"Data Value\": value,\n  });\n}\n\n// Send to CSV node\nmsg.payload = result;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 560,
+        "wires": [
+            [
+                "a0400dcb46aa114e"
+            ]
+        ]
+    },
+    {
+        "id": "44f5e56177bcfeef",
+        "type": "csv",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "once",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "No.,Timestamp,Sequence Number,Attribute,Status,Data Type,Data Value",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 1010,
+        "y": 560,
+        "wires": [
+            [
+                "8b8a16fb56d160d5"
+            ]
+        ]
+    },
+    {
+        "id": "ff4ce922f4dd77b7",
+        "type": "split",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload",
+        "x": 870,
+        "y": 560,
+        "wires": [
+            [
+                "44f5e56177bcfeef",
+                "7dbee0d65649b8cf"
+            ]
+        ]
+    },
+    {
+        "id": "8b8a16fb56d160d5",
+        "type": "file",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/filtered_elems.csv",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 1210,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9e9eebc069241918",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "detect link status",
+        "func": "let packet = msg.packet;\n\nif (!packet) {\n    return null;\n}\n\nlet packetType = String(packet[\"Packet Type\"] || \"\");\n\nif (packetType === \"Link Status (0x08)\") {\n    return msg;\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 440,
+        "wires": [
+            [
+                "05a8298f25358817"
+            ]
+        ]
+    },
+    {
+        "id": "05a8298f25358817",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "process link status",
+        "func": "let packet = msg.packet;\n\nif (!packet) {\n    return null;\n}\n\nlet sourceRaw = packet[\"Source Address ZigBee\"];\nlet cmd = String(packet[\"Command String\"] || \"\");\n\nif (sourceRaw === undefined || sourceRaw === null || cmd === \"\") {\n    return null;\n}\n\nlet source = \"0x\" + Number(sourceRaw).toString(16);\n\nlet costs = flow.get(\"outgoing_costs\") || {};\n\nif (!costs[source]) {\n    costs[source] = {};\n}\n\nlet regex = /'Address':\\s*'([^']+)'[\\s\\S]*?'Outgoing Cost':\\s*'([^']+)'/g;\nlet match;\n\nwhile ((match = regex.exec(cmd)) !== null) {\n    let destination = match[1];\n    let cost = match[2];\n\n    costs[source][destination] = cost;\n}\n\nflow.set(\"outgoing_costs\", costs);\n\nmsg.payload = costs;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 440,
+        "wires": [
+            [
+                "b089969fcf0e7211"
+            ]
+        ]
+    },
+    {
+        "id": "b089969fcf0e7211",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "build csv costs",
+        "func": "let costs = flow.get(\"outgoing_costs\") || {};\n\nlet lines = [\"No.,Source,Destination,Cost\"];\nlet no = 1;\n\nfor (let source in costs) {\n    for (let destination in costs[source]) {\n        lines.push(`${no++},${source},${destination},${costs[source][destination]}`);\n    }\n}\n\nmsg.payload = lines.join(\"\\n\") + \"\\n\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 440,
+        "wires": [
+            [
+                "d4bd56d32fc3986a"
+            ]
+        ]
+    },
+    {
+        "id": "d4bd56d32fc3986a",
+        "type": "file",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/outgoing_cost.csv",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1210,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7909b546c3c62cad",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "prepare thingspeak",
+        "func": "let rows = msg.payload;\n\nlet apiKey = \"XAC9SUJ2BSYKUVGS\";\n\nlet sources = [...new Set(rows.map(r => r.Source))];\nsources.sort((a, b) => parseInt(a, 16) - parseInt(b, 16));\nlet smallestSource = sources[0];\n\nlet filtered = rows\n    .filter(r => r.Source === smallestSource)\n    .sort((a, b) => parseInt(a.Destination, 16) - parseInt(b.Destination, 16));\n\nmsg.payload = filtered.map(r => ({\n    url: \"https://api.thingspeak.com/update?api_key=\" + apiKey + \"&field1=\" + r.Cost,\n    payload: r\n}));\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 760,
+        "wires": [
+            [
+                "cc2f4107f2712c2b"
+            ]
+        ]
+    },
+    {
+        "id": "cc2f4107f2712c2b",
+        "type": "split",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload",
+        "x": 570,
+        "y": 760,
+        "wires": [
+            [
+                "19088de29e2308c6"
+            ]
+        ]
+    },
+    {
+        "id": "bbdd287941203528",
+        "type": "delay",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "20",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "20",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 940,
+        "y": 760,
+        "wires": [
+            [
+                "9470f8555ae3be3e"
+            ]
+        ]
+    },
+    {
+        "id": "9470f8555ae3be3e",
+        "type": "http request",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1130,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "19088de29e2308c6",
+        "type": "change",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "payload.url",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 730,
+        "y": 760,
+        "wires": [
+            [
+                "bbdd287941203528"
+            ]
+        ]
+    },
+    {
+        "id": "359f8aee1a137ac5",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "limit 200",
+        "func": "let count = flow.get(\"msg_count\") || 0;\n\nif (count >= 200) {\n    return null;\n}\n\ncount++;\n\nflow.set(\"msg_count\", count);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 320,
+        "wires": [
+            [
+                "348979ac59fb2d09",
+                "a427bf23be43a1ff"
+            ]
+        ]
+    },
+    {
+        "id": "724227fa83fe892f",
+        "type": "file in",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "filename": "/results/outgoing_cost.csv",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 590,
+        "y": 700,
+        "wires": [
+            [
+                "590ffd24ba3b5819"
+            ]
+        ]
+    },
+    {
+        "id": "590ffd24ba3b5819",
+        "type": "csv",
+        "z": "f6883eb3583e92ca",
+        "name": "",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\r\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 790,
+        "y": 700,
+        "wires": [
+            [
+                "7909b546c3c62cad"
+            ]
+        ]
+    },
+    {
+        "id": "209b1794b5ef45c1",
+        "type": "ui-chart",
+        "z": "f6883eb3583e92ca",
+        "group": "1a391915038b2534",
+        "name": "current",
+        "label": "RMS Current",
+        "order": 1,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload.DataValue",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 1140,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b52769b1134e43a7",
+        "type": "switch",
+        "z": "f6883eb3583e92ca",
+        "name": "rms current",
+        "property": "payload.Attribute",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "RMS Current",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 970,
+        "y": 620,
+        "wires": [
+            [
+                "209b1794b5ef45c1"
+            ]
+        ]
+    },
+    {
+        "id": "7dbee0d65649b8cf",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "prepare for chart",
+        "func": "msg.payload.DataValue = msg.payload[\"Data Value\"];\nmsg.topic = msg.topic.replace(\"ZigBee/\", \"\");\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 620,
+        "wires": [
+            [
+                "903d295d439ccaeb"
+            ]
+        ]
+    },
+    {
+        "id": "903d295d439ccaeb",
+        "type": "switch",
+        "z": "f6883eb3583e92ca",
+        "name": "validate",
+        "property": "payload.DataValue",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "istype",
+                "v": "number",
+                "vt": "number"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 800,
+        "y": 620,
+        "wires": [
+            [
+                "b52769b1134e43a7",
+                "0c17989ac525eef3"
+            ]
+        ]
+    },
+    {
+        "id": "af4b9bfce181029e",
+        "type": "ui-chart",
+        "z": "f6883eb3583e92ca",
+        "group": "1a391915038b2534",
+        "name": "voltage",
+        "label": "RMS Voltage",
+        "order": 2,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload.DataValue",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 1140,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0c17989ac525eef3",
+        "type": "switch",
+        "z": "f6883eb3583e92ca",
+        "name": "rms voltage",
+        "property": "payload.Attribute",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "RMS Voltage",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 970,
+        "y": 680,
+        "wires": [
+            [
+                "af4b9bfce181029e"
+            ]
+        ]
+    },
+    {
+        "id": "a0400dcb46aa114e",
+        "type": "switch",
+        "z": "f6883eb3583e92ca",
+        "name": "filter",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 730,
+        "y": 560,
+        "wires": [
+            [
+                "ff4ce922f4dd77b7"
+            ]
+        ]
+    },
+    {
+        "id": "87823c05cd10b838",
+        "type": "function",
+        "z": "f6883eb3583e92ca",
+        "name": "after 200 msgs",
+        "func": "let count = flow.get(\"msg_count\") || 0;\n\nif (count != 200) {\n    return null;\n}\n\ncount++;\n\nflow.set(\"msg_count\", count);\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 700,
+        "wires": [
+            [
+                "724227fa83fe892f"
+            ]
+        ]
+    }
+]
