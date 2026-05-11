@@ -8,6 +8,6 @@
 *.synctex.gz
 *.pdf
 mosquitto.db
-challenge/data/id_log.csv
-challenge/data/filtered_elems.csv
-challenge/data/outgoing_cost.csv
+#challenge/data/id_log.csv
+#challenge/data/filtered_elems.csv
+#challenge/data/outgoing_cost.csv
