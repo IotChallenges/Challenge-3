@@ -30,7 +30,46 @@
 \tableofcontents
 \newpage
 
-\section{Introduction}
+\section{Node-RED implementation}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{doc/screenshot.png}
+    \caption{Screenshot of Node-RED Flow}
+    \label{fig:flow-screenshot}
+\end{figure}
 
-\section{Appendix}
+Figure \ref{fig:flow-screenshot} shows a screenshot of the Node-RED flow. This flow implements all the functionality required by the Challenge. Starting in the top left, there is the ``timestamp'' inject node, which periodically generates a message with the current timestamp. The function node ``random'' receives this timestamp, converts it from milliseconds to seconds, and generates a random number. The MQTT node then publishes this message. The ``enumerator'' node then enumerates each incoming message with an incremental row number. Next, the template node simply changes the message field names to match the CSV column names. The output is then converted to CSV and written as a file.\\
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{doc/current.png}
+    \caption{RMS Current Dashboard}
+    \label{fig:current-dashboard}
+\end{figure}
+The messages sent earlier to the given MQTT topic are received. Based on these messages, the number N (index of the row in the provided CSV file) is calculated and a topic is set for this message. Meanwhile, the CSV file is read and converted and a topic is set for its message using the function node labeled ``topic''. The resulting messages are then joined together and the topic is used as a key for the respective message. Next, in the function node ``get packet n'', the nth recorded packet and its data are extracted and validated. In addition, the payload and topic of the message is already prepared as such that it can be sent to the MQTT broker in the specified format. This node provides the basis for the second and third parts of the Challenge. The ``filter'' only forwards messages that have the ZBEE\_ZCL layer. These are then sent to MQTT.\\
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{doc/voltage.png}
+    \caption{RMS Voltage Dashboard}
+    \label{fig:voltage-dashboard}
+\end{figure}
+The provided packet is examined in the ``extract attributes'' function node as well. The desired attributes are extracted, as well as their data types and values. After that, they are filtered if they have no attributes, and the message is split on a per-attribute basis. These attributes are then written to the corresponding CSV file. Depending on the attribute name, these values are also forwarded to the corresponding chart node. Figures \ref{fig:current-dashboard} and \ref{fig:voltage-dashboard} display screenshots taken from the Node-RED dashboard for the attributes ``RMS Current'' and ``RMS Voltage'' respectively.
+
+\vspace{10pt}
+
+The flow also implements the processing of Link Status packets (\texttt{Packet Type = Link Status (0x08)}).  
+A dedicated branch detects these packets and extracts the ZigBee source address, destination addresses, and their corresponding outgoing costs. The extracted information is stored in a flow context structure indexed by source and destination addresses. If a later Link Status packet arrives from the same source, the stored outgoing costs are updated accordingly.\\
+
+After processing the Link Status packets, the node ``build csv costs'' generates the file \texttt{outgoing\_cost.csv} with the format:
+
+\begin{center}
+\texttt{No., Source, Destination, Cost}
+\end{center}
+
+The smallest source address is then identified by interpreting the addresses as hexadecimal numbers. For this source address, all destination addresses are sorted in ascending hexadecimal order. The corresponding outgoing costs are prepared for transmission to ThingSpeak using the HTTP API.\\
+
+A split node generates one HTTP request per destination address, while a delay node configured to allow one message every 20 seconds ensures compliance with the ThingSpeak rate limit. The outgoing cost of each destination address is transmitted to ThingSpeak using \texttt{field1}. These requests are sent only, after 200 messages have already been processed.\\
+
+Additionally, a function node called ``limit 200'' was implemented immediately after the MQTT subscription. This node counts all received ID messages and stops forwarding messages after exactly 200 received packets, including ignored packets, fulfilling the Challenge requirement.
+
 \end{document}
